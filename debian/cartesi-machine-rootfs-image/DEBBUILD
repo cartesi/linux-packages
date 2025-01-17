@@ -1,0 +1,19 @@
+#!/bin/bash
+pkgname=cartesi-machine-rootfs-image
+pkgver=0.17.0
+pkgrel=1
+_pkgver=${pkgver}-test2
+sources=("rootfs.ext2::https://github.com/cartesi/machine-guest-tools/releases/download/v${_pkgver}/rootfs-tools-v${_pkgver}.ext2")
+sha256sums="293f377b0cb32cc477ef2c71be9430bab3a25d54eb0ab9aff07a4e6fac6aa829 rootfs.ext2"
+arch=all
+
+prepare() {
+    # Create reproducible source tarball
+    mkdir ${pkgname}-${pkgver}
+    mv rootfs.ext2 ${pkgname}-${pkgver}/
+    tar --sort=name \
+        --mtime="@$(stat -c %Y ${pkgname}-${pkgver}/rootfs.ext2)" \
+        --owner=0 --group=0 --numeric-owner \
+        --pax-option=exthdr.name=%d/PaxHeaders/%f,delete=atime,delete=ctime \
+        -czf ${pkgname}_${pkgver}.orig.tar.gz ${pkgname}-${pkgver}
+}

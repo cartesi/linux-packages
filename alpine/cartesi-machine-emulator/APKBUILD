@@ -1,0 +1,52 @@
+# Maintainer: Eduardo Bart <edub4rt@gmail.com>
+pkgname=cartesi-machine-emulator
+pkgver=0.19.0
+pkgrel=1
+_pkgver=$pkgver-test1
+pkgdesc="Cartesi Machine emulator for RISC-V Linux systems"
+url="https://github.com/cartesi/machine-emulator"
+arch="all"
+license="LGPL-3.0"
+depends="libslirp lua5.4"
+makedepends="build-base boost-dev libslirp-dev lua5.4-dev"
+options="!check"
+source="machine-emulator-$_pkgver.tar.gz::https://github.com/cartesi/machine-emulator/archive/refs/tags/v$_pkgver.tar.gz
+add-generated-files.diff::https://github.com/cartesi/machine-emulator/releases/download/v$_pkgver/add-generated-files.diff"
+sha256sums="93121d1c7edf5ebc8d5b8b042d3b18a4cf2454c702ec2cfe8c92086d7529e16d  machine-emulator-$_pkgver.tar.gz
+162d62ec8b66801f1ad421774050ea1d6c5cc4c7dcc8f5615956853d6baed87f  add-generated-files.diff"
+subpackages="$pkgname-dev:package_dev cartesi-machine:package_meta"
+
+_builddir="$srcdir/machine-emulator-$_pkgver"
+
+prepare() {
+    cd "$_builddir"
+    patch -Np1 < ../add-generated-files.diff
+}
+
+build() {
+    cd "$_builddir"
+    export LDFLAGS="-static-libgcc -static-libstdc++"
+    make
+}
+
+package() {
+    cd "$_builddir"
+    make install-shared-libs install-lua-libs install-bins install-lua-bins install-shared-files \
+        PREFIX=/usr DESTDIR="$pkgdir"
+}
+
+package_dev() {
+    pkgdesc="Cartesi Machine emulator development files"
+    depends="libslirp-dev"
+
+    cd "$_builddir"
+    make install-headers install-static-libs \
+        PREFIX=/usr DESTDIR="$subpkgdir"
+}
+
+package_meta() {
+    pkgdesc="Cartesi Machine (meta-package)"
+    depends="cartesi-machine-emulator cartesi-machine-rootfs-image cartesi-machine-linux-image"
+
+    mkdir -p "$subpkgdir"
+}
