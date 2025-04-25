@@ -1,10 +1,10 @@
 #!/bin/bash
 pkgname=cartesi-machine-guest-tools
-pkgver=0.17.0
-_pkgver=$pkgver-test2
+pkgver=0.17.1
+_pkgver=$pkgver
 pkgrel=1
 sources=("${pkgname}_${pkgver}.orig.tar.gz::https://github.com/cartesi/machine-guest-tools/archive/refs/tags/v$_pkgver.tar.gz")
-sha256sums=("82e600f1610a03d0660af849a54b0ff7db6f88172203f77a54f3bfd5241f3b8b  ${pkgname}_${pkgver}.orig.tar.gz")
+sha256sums=("c450a825702f85c0e85ac3bc9010733c8f1f6b0c18129b1d21e407f72b20c046  ${pkgname}_${pkgver}.orig.tar.gz")
 arch=riscv64
 
 prepare() {

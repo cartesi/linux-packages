@@ -1,10 +1,10 @@
 #!/bin/bash
 pkgname=cartesi-machine-rootfs-image
-pkgver=0.17.0
+pkgver=0.17.1
 pkgrel=1
-_pkgver=${pkgver}-test2
-sources=("rootfs.ext2::https://github.com/cartesi/machine-guest-tools/releases/download/v${_pkgver}/rootfs-tools-v${_pkgver}.ext2")
-sha256sums="293f377b0cb32cc477ef2c71be9430bab3a25d54eb0ab9aff07a4e6fac6aa829 rootfs.ext2"
+_pkgver_tools=${pkgver}
+sources=("rootfs.ext2::https://github.com/cartesi/machine-guest-tools/releases/download/v${_pkgver_tools}/rootfs-tools.ext2")
+sha256sums="e5d1f7c449e24314e0bcea1446e1c754a737aa7685b8c8d285a5e7eefa6b8044 rootfs.ext2"
 arch=all
 
 prepare() {

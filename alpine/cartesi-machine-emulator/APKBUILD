@@ -2,18 +2,18 @@
 pkgname=cartesi-machine-emulator
 pkgver=0.19.0
 pkgrel=1
-_pkgver=$pkgver-test1
+_pkgver=$pkgver
 pkgdesc="Cartesi Machine emulator for RISC-V Linux systems"
 url="https://github.com/cartesi/machine-emulator"
 arch="all"
 license="LGPL-3.0"
 depends="libslirp lua5.4"
-makedepends="build-base boost-dev libslirp-dev lua5.4-dev"
+makedepends="build-base boost-dev libslirp-dev lua5.4-dev patchelf"
 options="!check"
 source="machine-emulator-$_pkgver.tar.gz::https://github.com/cartesi/machine-emulator/archive/refs/tags/v$_pkgver.tar.gz
 add-generated-files.diff::https://github.com/cartesi/machine-emulator/releases/download/v$_pkgver/add-generated-files.diff"
-sha256sums="93121d1c7edf5ebc8d5b8b042d3b18a4cf2454c702ec2cfe8c92086d7529e16d  machine-emulator-$_pkgver.tar.gz
-162d62ec8b66801f1ad421774050ea1d6c5cc4c7dcc8f5615956853d6baed87f  add-generated-files.diff"
+sha256sums="1a33fb7e0dd7030656ddbb214dcd2f5a569f64e906edb20f149b66b34e1e0dd3  machine-emulator-$_pkgver.tar.gz
+a892e2d9f5c331f5e80bcb5db4133e7db625aa4d14ffdf9467b75c4c34d1744f  add-generated-files.diff"
 subpackages="$pkgname-dev:package_dev cartesi-machine:package_meta"
 
 _builddir="$srcdir/machine-emulator-$_pkgver"
@@ -33,6 +33,8 @@ package() {
     cd "$_builddir"
     make install-shared-libs install-lua-libs install-bins install-lua-bins install-shared-files \
         PREFIX=/usr DESTDIR="$pkgdir"
+
+    patchelf --set-rpath '/usr/lib/lua/5.4' "$pkgdir/usr/lib/lua/5.4/cartesi/jsonrpc.so"
 }
 
 package_dev() {
