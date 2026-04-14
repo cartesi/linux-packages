@@ -17,8 +17,8 @@ cartesi-machine-guest-tools
 TARGET_ARCH=$(shell dpkg --print-architecture)
 
 # Docker base images used for building packages
-BASE_IMAGE_amd64=debian:bookworm-slim
-BASE_IMAGE_arm64=debian:bookworm-slim
+BASE_IMAGE_amd64=debian:trixie-slim
+BASE_IMAGE_arm64=debian:trixie-slim
 BASE_IMAGE_riscv64=ubuntu:noble
 BASE_IMAGE=$(BASE_IMAGE_$(TARGET_ARCH))
 IMAGE=cartesi/deb-builder-$(TARGET_ARCH)
