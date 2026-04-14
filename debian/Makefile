@@ -92,12 +92,16 @@ exec: ## Execute a COMMAND inside an image for given TARGET_ARCH
 		apt-get update -o Dir::Etc::sourcelist=/etc/apt/sources.list.d/cartesi-deb-apt.list -o Dir::Etc::sourceparts=- -o APT::Get::List-Cleanup=0 || true) && \
 	$(COMMAND)"
 
+DOCKER_BUILD_FLAGS=
+
 image: ## Build Docker image for building packages for given TARGET_ARCH
-	docker build --platform=linux/$(TARGET_ARCH) \
+	docker buildx build --platform=linux/$(TARGET_ARCH) \
 		--build-arg=BASE_IMAGE=$(BASE_IMAGE) \
 		--tag=$(IMAGE) \
+		--load \
 		--progress=plain \
-		--file Dockerfile .
+		--file Dockerfile \
+		$(DOCKER_BUILD_FLAGS) .
 
 test: ## Test built packages for all architectures (amd64/arm64/riscv64)
 	@$(MAKE) --no-print-directory test-packages TARGET_ARCH=amd64
