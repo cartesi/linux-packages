@@ -1,0 +1,36 @@
+name: Debian Packages
+on: [push]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        target-arch:
+          - amd64
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Checkout machine emulator source code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          submodules: recursive
+
+      - name: Import GPG signing key
+        working-directory: ./debian/
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+        run: |
+          mkdir -p key
+          chmod 700 key
+          echo "$GPG_PRIVATE_KEY" | base64 -d | gpg --homedir "$(pwd)/key" --import
+
+      - name: Build packages
+        working-directory: ./debian/
+        env:
+          TARGET_ARCH: ${{ matrix.target-arch }}
+        run: |
+          make image
+          make cartesi-machine-linux-image.deb
