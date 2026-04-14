@@ -1,0 +1,51 @@
+name: Debian Packages
+on: [push]
+
+jobs:
+  debian-build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            arch: amd64
+          - runner: ubuntu-24.04-arm
+            arch: arm64
+          - runner: ubuntu-24.04-riscv
+            arch: riscv64
+
+    runs-on: ${{ matrix.runner }}
+    name: Debian Build
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          submodules: recursive
+
+      - name: Make builder container image
+        working-directory: debian
+        run: |
+          make image TARGET_ARCH=${{ matrix.arch }} \
+            DOCKER_BUILD_FLAGS="--cache-from type=gha,scope=${{ matrix.arch }} --cache-to type=gha,scope=${{ matrix.arch }},mode=max"
+
+      - name: Build packages
+        working-directory: debian
+        run: make packages TARGET_ARCH=${{ matrix.arch }}
+
+      - name: Export builder container image
+        run: docker save cartesi/deb-builder-${{ matrix.arch }} | gzip > /tmp/deb-builder-${{ matrix.arch }}.tar.gz
+
+      - name: Upload builder container image
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: image-deb-builder-${{ matrix.arch }}
+          path: /tmp/deb-builder-${{ matrix.arch }}.tar.gz
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: artifacts-apt-${{ matrix.arch }}
+          path: cdn/apt
