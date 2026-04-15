@@ -13,9 +13,15 @@ cartesi-machine-guest-tools
 # Target architecture to compile packages
 TARGET_ARCH?=$(shell uname -m)
 
+# Docker platform architecture (maps uname -m names to Docker platform names)
+DOCKER_ARCH_x86_64=amd64
+DOCKER_ARCH_aarch64=arm64
+DOCKER_ARCH_riscv64=riscv64
+DOCKER_ARCH=$(DOCKER_ARCH_$(TARGET_ARCH))
+
 # Docker base image used for building packages
-BASE_IMAGE=alpine:3.21
-IMAGE=cartesi/apk-builder-$(TARGET_ARCH)
+BASE_IMAGE=alpine:3.23
+IMAGE=cartesi/apk-builder-$(DOCKER_ARCH)
 
 # Repository path to save built packages
 REPO_PATH=$(abspath ../cdn)/apk
@@ -53,7 +59,7 @@ packages: $(patsubst %,%.apk,$(PACKAGES)) ## Build packages for given TARGET_ARC
 key: ## Generate package signature key
 	echo "NOTICE: Generating new key!"
 	@mkdir -p $(REPO_PATH)/keys key
-	docker run --platform=linux/$(TARGET_ARCH) \
+	docker run --platform=linux/$(DOCKER_ARCH) \
 		--volume ./key:/root/.abuild \
 		--volume $(REPO_PATH):/apk \
 		--rm $(IMAGE) \
@@ -61,6 +67,7 @@ key: ## Generate package signature key
 	abuild-keygen -n && \
 	mv /root/.abuild/*.rsa.pub /root/.abuild/$(KEY_NAME).rsa.pub && \
 	mv /root/.abuild/*.rsa /root/.abuild/$(KEY_NAME).rsa && \
+	echo 'PACKAGER_PRIVKEY=/root/.abuild/$(KEY_NAME).rsa' > /root/.abuild/abuild.conf && \
 	cp /root/.abuild/$(KEY_NAME).rsa.pub /apk/keys/$(KEY_NAME).rsa.pub && \
 	chown -R $(shell id -u):$(shell id -g) /root/.abuild /apk/keys"
 
@@ -68,7 +75,7 @@ shell: ## Spawn an image shell for given TARGET_ARCH
 	@$(MAKE) --no-print-directory exec  DOCKER_FLAGS="-it" COMMAND="ash"
 
 exec: ## Execute a COMMAND inside an image for given TARGET_ARCH
-	docker run --platform=linux/$(TARGET_ARCH) \
+	docker run --platform=linux/$(DOCKER_ARCH) \
 		--volume ./key:/key \
 		--volume $(REPO_PATH)/$(REPO_NAME):/root/packages/work \
 		--volume .:/work \
@@ -81,7 +88,7 @@ exec: ## Execute a COMMAND inside an image for given TARGET_ARCH
 	$(COMMAND)"
 
 image: ## Build Docker image for building packages for given TARGET_ARCH
-	docker build --platform=linux/$(TARGET_ARCH) \
+	docker build --platform=linux/$(DOCKER_ARCH) \
 		--build-arg=BASE_IMAGE=$(BASE_IMAGE) \
 		--tag=$(IMAGE) \
 		--progress=plain \
