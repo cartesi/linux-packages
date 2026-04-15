@@ -1,0 +1,16 @@
+#!/bin/bash
+pkgname=cartesi-machine-emulator
+pkgver=0.20.0
+pkgrel=1
+_pkgver=${pkgver}
+sources=("${pkgname}_${pkgver}.orig.tar.gz::https://github.com/cartesi/machine-emulator/archive/refs/tags/v${_pkgver}.tar.gz"
+         "debian/patches/add-generated-files.diff::https://github.com/cartesi/machine-emulator/releases/download/v${_pkgver}/add-generated-files.diff")
+sha256sums=("3746abb72d45dd2388f79fc24b048fe306db8e1f9f7e072176e51b95c4453949  ${pkgname}_${pkgver}.orig.tar.gz"
+            "d9c2afcefc2759e7cd37bbedc83d54c81515f0fddb671103b489b8789aee33bb  debian/patches/add-generated-files.diff")
+arch=any
+
+prepare() {
+    tar -xf ${pkgname}_${pkgver}.orig.tar.gz
+    mv machine-emulator-${_pkgver} ${pkgname}-${pkgver}
+    patch -d ${pkgname}-${pkgver} -Np1 < debian/patches/add-generated-files.diff
+}
