@@ -26,7 +26,7 @@ prepare() {
 build() {
     cd "$_builddir"
     export LDFLAGS="-static-libgcc -static-libstdc++"
-    make
+    make MYDEFS="-DNO_MULTIVERSIONING -DACCESSPERMS=0777"
 }
 
 package() {
