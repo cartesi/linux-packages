@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=debian
+ARG BASE_IMAGE=ubuntu:noble
 FROM ${BASE_IMAGE} AS toolchain
 
 # Install build essential
