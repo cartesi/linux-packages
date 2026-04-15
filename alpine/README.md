@@ -4,7 +4,7 @@ This repository contains build scripts for packaging Cartesi related software fo
 
 ## Quick start
 
-Packages in this repository are compatible with **Alpine 3.21** on *amd64*, *arm64*, and *riscv64* architectures using the APK package manager.
+Packages in this repository are compatible with **Alpine 3.23** on *amd64*, *arm64*, and *riscv64* architectures using the APK package manager.
 Example usage:
 
 ```sh
