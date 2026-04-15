@@ -10,4 +10,6 @@ RUN apk update && \
 RUN echo /root/packages/work >> /etc/apk/repositories && \
     adduser -D builder
 
+COPY re-sign-apk.sh /usr/local/bin/
+
 WORKDIR /work

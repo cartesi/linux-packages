@@ -1,0 +1,230 @@
+name: Alpine Packages
+on:
+  push:
+    paths:
+      - ".github/workflows/alpine.yml"
+      - "alpine/**"
+
+jobs:
+  alpine-build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            arch: x86_64
+            docker_arch: amd64
+          - runner: ubuntu-24.04-arm
+            arch: aarch64
+            docker_arch: arm64
+          - runner: ubuntu-24.04-riscv
+            arch: riscv64
+            docker_arch: riscv64
+
+    runs-on: ${{ matrix.runner }}
+    name: Alpine Build
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          submodules: recursive
+
+      - name: Setup up Docker Buildx
+        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4.0.0
+
+      - name: Make builder container image
+        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f # v7.1.0
+        with:
+          context: alpine
+          file: alpine/Dockerfile
+          platforms: linux/${{ matrix.docker_arch }}
+          tags: cartesi/apk-builder-${{ matrix.docker_arch }}
+          load: true
+          push: false
+          cache-from: type=gha,scope=${{ matrix.docker_arch }}
+          cache-to: type=gha,scope=${{ matrix.docker_arch }},mode=max
+
+      - name: Generate disposable build keys
+        working-directory: alpine
+        run: make key KEY_NAME=disposable
+
+      - name: Build packages
+        working-directory: alpine
+        run: make packages TARGET_ARCH=${{ matrix.arch }} KEY_NAME=disposable
+
+      - name: Export builder container image
+        run: docker save cartesi/apk-builder-${{ matrix.docker_arch }} | gzip > /tmp/apk-builder-${{ matrix.docker_arch }}.tar.gz
+
+      - name: Upload builder container image
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: image-apk-builder-${{ matrix.docker_arch }}
+          path: /tmp/apk-builder-${{ matrix.docker_arch }}.tar.gz
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: artifacts-apk-${{ matrix.arch }}
+          path: cdn/apk
+
+  alpine-test:
+    name: Alpine Test
+    runs-on: ubuntu-24.04
+    needs: alpine-build
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          submodules: recursive
+
+      - name: Download apk artifacts
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: artifacts-apk-*
+          path: cdn/apk/
+          merge-multiple: true
+
+      - name: Download builder images
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: image-apk-builder-*
+          path: /tmp/images
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a # v4.0.0
+
+      - name: Import builder images
+        run: find /tmp/images -name '*.tar.gz' | xargs -I {} docker image load --input {}
+
+      - name: Test
+        working-directory: alpine
+        run: |
+          make test-packages TARGET_ARCH=x86_64 KEY_NAME=disposable
+          make test-packages TARGET_ARCH=aarch64 KEY_NAME=disposable
+          make test-packages TARGET_ARCH=riscv64 KEY_NAME=disposable
+
+  alpine-sign:
+    runs-on: ubuntu-24.04
+    name: Alpine Signing
+    needs: [ alpine-build, alpine-test ]
+    #FIXME: uncomment when process is validated
+    #if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
+    environment: signing
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          submodules: recursive
+
+      - name: Download apk artifacts
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: artifacts-apk-*
+          path: cdn/apk/
+          merge-multiple: true
+
+      - name: Download builder images
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: image-apk-builder-*
+          path: /tmp/images
+
+      - name: Import builder image
+        run: find /tmp/images -name '*.tar.gz' | xargs -I {} docker image load --input {}
+
+      - name: Import APK signing key
+        working-directory: alpine
+        env:
+          APK_KEY: ${{ secrets.APK_KEY }}
+          APK_PUB_KEY: ${{ vars.APK_PUB_KEY }}
+        run: |
+          mkdir -p key
+          chmod 700 key
+          echo "$APK_KEY" > key/cartesi-apk-key.rsa
+          echo "$APK_PUB_KEY" > key/cartesi-apk-key.rsa.pub
+          echo "PACKAGER_PRIVKEY=/root/.abuild/cartesi-apk-key.rsa" > key/abuild.conf
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a # v4.0.0
+
+      - name: Sign packages
+        working-directory: alpine
+        run: |
+          make re-sign TARGET_ARCH=x86_64  KEY_NAME=cartesi-apk-key
+          make re-sign TARGET_ARCH=aarch64 KEY_NAME=cartesi-apk-key
+          make re-sign TARGET_ARCH=riscv64 KEY_NAME=cartesi-apk-key
+
+      - name: Upload signed artifacts
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: signed-artifacts-apk
+          path: cdn/apk
+
+  publish:
+    needs: alpine-sign
+    #FIXME: uncomment when process is validated
+    #if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+      contents: write
+    steps:
+      - name: Create RSA Public Key from variable
+        env:
+          APK_PUB_KEY: ${{ vars.APK_PUB_KEY }}
+        run: |
+          mkdir -p _site/apk/keys
+          echo "$APK_PUB_KEY" > _site/apk/keys/cartesi-apk-key.rsa.pub
+
+      - name: Checkout git persisted cdn/apk/ artifacts
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: cdn
+          path: cdn
+          lfs: true
+          sparse-checkout: |
+            apk
+
+      - name: Download signed archives
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: signed-artifacts-apk
+          path: _site/apk/
+
+      - name: List _site/ content
+        run: tree _site/
+
+      - name: Sync cdn/apk and _site/apk
+        run: |
+          rm _site/apk/keys/disposable.rsa.pub
+          cp -vr --update=none cdn/apk/* _site/apk/
+          cp -vr _site/apk/* cdn/apk/
+
+      - name: Persist packages into git cdn
+        run: |
+          cd cdn/apk/
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add --sparse keys/ stable/
+          git diff --staged --quiet || git commit -m "Update cdn/apk ${{ github.ref_name }}"
+          git push origin cdn
+
+      - name: Setup Pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v5.0.0
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0

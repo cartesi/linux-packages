@@ -53,8 +53,22 @@ packages: $(patsubst %,%.apk,$(PACKAGES)) ## Build packages for given TARGET_ARC
 	@$(MAKE) --no-print-directory exec COMMAND="\
 	cd $* && \
 	export SOURCE_DATE_EPOCH=\\\`stat -c %Y APKBUILD\\\` && \
-    abuild -rF && \
-    chown -R $(shell id -u):$(shell id -g) /root/packages/work"
+	abuild -rF && \
+	chown -R $(shell id -u):$(shell id -g) /root/packages/work"
+
+re-sign: ## Re-sign packages and index for given TARGET_ARCH (uses x86_64 builder image) and KEY_NAME 
+	@$(MAKE) --no-print-directory exec COMMAND="\
+	cd /root/packages/work/$(TARGET_ARCH) && \
+	find ./*.apk -exec /usr/local/bin/re-sign-apk.sh {} /root/.abuild/$(KEY_NAME).rsa \; && \
+	rm APKINDEX.tar.gz && \
+	apk index --no-warnings --output APKINDEX.tar.gz *.apk && \
+	abuild-sign --private /root/.abuild/$(KEY_NAME).rsa APKINDEX.tar.gz && \
+	chown -R $(shell id -u):$(shell id -g) /root/packages/work"
+
+re-sign-all: ## Re-sign packages and index for all architectures
+	@$(MAKE) --no-print-directory sign TARGET_ARCH=x86_64
+	@$(MAKE) --no-print-directory sign TARGET_ARCH=aarch64
+	@$(MAKE) --no-print-directory sign TARGET_ARCH=riscv64
 
 key: ## Generate package signature key
 	echo "NOTICE: Generating new key!"
@@ -65,8 +79,8 @@ key: ## Generate package signature key
 		--rm $(IMAGE) \
 		ash -c "\
 	abuild-keygen -n && \
-	mv /root/.abuild/*.rsa.pub /root/.abuild/$(KEY_NAME).rsa.pub && \
-	mv /root/.abuild/*.rsa /root/.abuild/$(KEY_NAME).rsa && \
+	mv /root/.abuild/-*.rsa.pub /root/.abuild/$(KEY_NAME).rsa.pub && \
+	mv /root/.abuild/-*.rsa /root/.abuild/$(KEY_NAME).rsa && \
 	echo 'PACKAGER_PRIVKEY=/root/.abuild/$(KEY_NAME).rsa' > /root/.abuild/abuild.conf && \
 	cp /root/.abuild/$(KEY_NAME).rsa.pub /apk/keys/$(KEY_NAME).rsa.pub && \
 	chown -R $(shell id -u):$(shell id -g) /root/.abuild /apk/keys"
@@ -75,6 +89,7 @@ shell: ## Spawn an image shell for given TARGET_ARCH
 	@$(MAKE) --no-print-directory exec  DOCKER_FLAGS="-it" COMMAND="ash"
 
 exec: ## Execute a COMMAND inside an image for given TARGET_ARCH
+	@mkdir -p key
 	docker run --platform=linux/$(DOCKER_ARCH) \
 		--volume ./key:/key \
 		--volume $(REPO_PATH)/$(REPO_NAME):/root/packages/work \
@@ -82,15 +97,15 @@ exec: ## Execute a COMMAND inside an image for given TARGET_ARCH
 		--workdir /work \
 		$(DOCKER_FLAGS) --rm $(IMAGE) \
 		ash -c "\
-	cp /key/*.rsa.pub /etc/apk/keys/ && \
-	cp -a /key /root/.abuild && \
-	chown -R root:root /root/.abuild && \
+	([ -f /key/$(KEY_NAME).rsa ] && cp /key/*.rsa.pub /etc/apk/keys/ && cp -a /key /root/.abuild && chown -R root:root /root/.abuild || true) && \
 	$(COMMAND)"
 
 image: ## Build Docker image for building packages for given TARGET_ARCH
 	docker build --platform=linux/$(DOCKER_ARCH) \
 		--build-arg=BASE_IMAGE=$(BASE_IMAGE) \
 		--tag=$(IMAGE) \
+		--load \
+
 		--progress=plain \
 		--file Dockerfile .
 
@@ -102,13 +117,15 @@ test: ## Test built packages for all architectures (x86_64/aarch64/riscv64)
 ifeq ($(TARGET_ARCH),riscv64)
 test-packages:
 	@$(MAKE) --no-print-directory exec COMMAND="\
-	apk add $(PACKAGES) && \
+	apk update && \
+	apk add --allow-untrusted $(PACKAGES) && \
 	rollup --help && \
 	cartesi-machine --final-hash"
 else
 test-packages: ## Test built packages for given TARGET_ARCH
 	@$(MAKE) --no-print-directory exec COMMAND="\
-	apk add $(PACKAGES) && \
+	apk update && \
+	apk add --allow-untrusted $(PACKAGES) && \
 	cartesi-machine --final-hash"
 endif
 
@@ -122,4 +139,4 @@ help: ## Show this help
 		-e 's/^\(.\+\):\(.*\)/$(shell tput setaf 6)\1$(shell tput sgr0):\2/' \
 		$(MAKEFILE_LIST) | column -c2 -t -s :
 
-.PHONY: all packages-all packages shell exec image test test-packages distclean help
+.PHONY: all packages-all packages shell exec image re-sign re-sign-all key test test-packages distclean help
