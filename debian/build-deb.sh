@@ -25,6 +25,14 @@ if [ "/apt/${REPO_NAME}/${pkgdeb}" -nt "$(find . -type f -printf '%T@ %p\n' | so
     echo "${pkgname}: Package is up to date"; exit 0
 fi
 
+# Maybe skip build in CI
+if [ -f "/apt/${REPO_NAME}/${pkgdeb}" ]; then
+    cached_ver=$(dpkg-deb --field "/apt/${REPO_NAME}/${pkgdeb}" Version)
+    if [ "${cached_ver}" = "${pkgver}-${pkgrel}" ]; then
+        echo "${pkgname}: Package is up to date (${cached_ver})"; exit 0
+    fi
+fi
+
 # Download
 for f in "${sources[@]}"; do wget -O $(echo $f | sed 's/::/ /'); done
 for c in "${sha256sums[@]}"; do echo $c | sha256sum --check; done
