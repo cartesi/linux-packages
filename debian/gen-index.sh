@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 cd /apt
+rm -f ${REPO_NAME}/InRelease ${REPO_NAME}/Release.gpg
 dpkg-scanpackages --multiversion ${REPO_NAME} > ${REPO_NAME}/Packages
 gzip -k -f /apt/${REPO_NAME}/Packages
 apt-ftparchive \

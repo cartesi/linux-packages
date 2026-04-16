@@ -99,6 +99,10 @@ jobs:
       - name: Import builder images
         run: find /tmp/images -name '*.tar.gz' | xargs -I {} docker image load --input {}
 
+      - name: Make index
+        working-directory: debian
+        run: make index
+
       - name: Test
         working-directory: debian
         run: |
