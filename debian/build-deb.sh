@@ -53,7 +53,7 @@ touch -r ../DEBBUILD **/**
 
 # Build and package
 apt-get build-dep --no-install-recommends -y .
-dpkg-buildpackage --build=${dpkgbuild}
+dpkg-buildpackage --build=${dpkgbuild} -us -uc
 
 # Update repository
 mv ../*.{deb,debian.tar.xz,dsc,buildinfo,changes} /apt/${REPO_NAME}/

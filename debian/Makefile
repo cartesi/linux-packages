@@ -35,9 +35,8 @@ ifeq ($(TARGET_ARCH),riscv64)
 PACKAGES+=$(PACKAGES_RISCV64)
 endif
 
-all: ## Generate a key (if needed) and build all packages
+all: ## Build all packages (unsigned)
 	@$(MAKE) --no-print-directory image
-	@$(MAKE) --no-print-directory key
 	@$(MAKE) --no-print-directory packages-all
 
 packages-all: ## Build packages for all architectures (amd64/arm64/riscv64)
@@ -69,10 +68,15 @@ key: ## Generate package signature key
 	chown -R $(shell id -u):$(shell id -g) /root/.gnupg /apt/keys"
 	@$(MAKE) --no-print-directory index
 
-index: ## Generate package index
+index: ## Generate package index (unsigned)
 	@mkdir -p $(REPO_PATH)/$(REPO_NAME)
 	@$(MAKE) --no-print-directory exec COMMAND="\
 	REPO_NAME=$(REPO_NAME) REPO_URL=$(REPO_URL) /work/gen-index.sh && \
+	chown -R $(shell id -u):$(shell id -g) /apt/$(REPO_NAME)"
+
+sign: ## Sign package index (requires key to exist, run 'make key' first)
+	@$(MAKE) --no-print-directory exec COMMAND="\
+	REPO_NAME=$(REPO_NAME) /work/sign-index.sh && \
 	chown -R $(shell id -u):$(shell id -g) /apt/$(REPO_NAME)"
 
 shell: ## Spawn an image shell for given TARGET_ARCH
@@ -131,4 +135,4 @@ help: ## Show this help
 		-e 's/^\(.\+\):\(.*\)/$(shell tput setaf 6)\1$(shell tput sgr0):\2/' \
 		$(MAKEFILE_LIST) | column -c2 -t -s :
 
-.PHONY: all packages-all packages shell index exec image test test-packages distclean help
+.PHONY: all packages-all packages shell index key sign exec image test test-packages distclean help
