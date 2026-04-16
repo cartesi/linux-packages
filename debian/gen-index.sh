@@ -8,6 +8,4 @@ apt-ftparchive \
       -o APT::FTPArchive::Release::Label="Cartesi APT Repository" \
       -o APT::FTPArchive::Release::Suite="stable" \
       release ${REPO_NAME} > ${REPO_NAME}/Release
-gpg -abs -o - /apt/${REPO_NAME}/Release > /apt/${REPO_NAME}/Release.gpg
-gpg --clearsign -o - /apt/${REPO_NAME}/Release > /apt/${REPO_NAME}/InRelease
 echo "deb ${REPO_URL} ${REPO_NAME}/" > /apt/${REPO_NAME}/sources.list
