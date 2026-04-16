@@ -47,7 +47,10 @@ packages-all: ## Build packages for all architectures (amd64/arm64/riscv64)
 	@$(MAKE) --no-print-directory image TARGET_ARCH=riscv64
 	@$(MAKE) --no-print-directory packages TARGET_ARCH=riscv64
 
-packages: $(patsubst %,%.deb,$(PACKAGES)) ## Build packages for given TARGET_ARCH
+packages: packages-info $(patsubst %,%.deb,$(PACKAGES)) ## Build packages for given TARGET_ARCH
+
+packages-info: ## Show which packages are going to be built
+	@echo "Packages to be built for $(TARGET_ARCH): $(PACKAGES)"
 
 %.deb: ## Build a package for given TARGET_ARCH
 	@mkdir -p $(REPO_PATH)/$(REPO_NAME)
@@ -135,4 +138,4 @@ help: ## Show this help
 		-e 's/^\(.\+\):\(.*\)/$(shell tput setaf 6)\1$(shell tput sgr0):\2/' \
 		$(MAKEFILE_LIST) | column -c2 -t -s :
 
-.PHONY: all packages-all packages shell index key sign exec image test test-packages distclean help
+.PHONY: all packages-all packages packages-info shell index key sign exec image test test-packages distclean help
