@@ -94,7 +94,7 @@ exec: ## Execute a COMMAND inside an image for given TARGET_ARCH
 		$(DOCKER_FLAGS) --rm $(IMAGE) \
 		bash -c "\
 	([ -f /apt/$(REPO_NAME)/Packages ] && \
-		echo 'deb [trusted=yes] file:///apt stable/' > /etc/apt/sources.list.d/cartesi-deb-apt.list && \
+		echo 'deb [trusted=yes arch=$(TARGET_ARCH)] file:///apt stable/' > /etc/apt/sources.list.d/cartesi-deb-apt.list && \
 		([ -f /apt/keys/$(KEY_NAME).gpg ] && gpg --dearmor -o /etc/apt/trusted.gpg.d/$(KEY_NAME).gpg < /apt/keys/$(KEY_NAME).gpg || true) && \
 		apt-get update -o Dir::Etc::sourcelist=/etc/apt/sources.list.d/cartesi-deb-apt.list -o Dir::Etc::sourceparts=- -o APT::Get::List-Cleanup=0 || true) && \
 	$(COMMAND)"
@@ -118,14 +118,14 @@ test: ## Test built packages for all architectures (amd64/arm64/riscv64)
 ifeq ($(TARGET_ARCH),riscv64)
 test-packages:
 	@$(MAKE) --no-print-directory exec COMMAND="\
-	apt-get install --no-install-recommends -y $(PACKAGES_ANYARCH) $(PACKAGES_ALLARCH) $(PACKAGES_RISCV64) && \
-	rollup --help && \
-	cartesi-machine --final-hash"
+	apt-get install --no-install-recommends -y $(PACKAGES_ANYARCH) $(PACKAGES_ALLARCH) $(PACKAGES_RISCV64) \
+	$(if $(filter cartesi-machine-guest-tools,$(PACKAGES_RISCV64)),&& rollup --help) \
+	$(if $(filter cartesi-machine-emulator,$(PACKAGES_ANYARCH)),&& cartesi-machine --final-hash)"
 else
 test-packages: ## Test built packages for given TARGET_ARCH
 	@$(MAKE) --no-print-directory exec COMMAND="\
-	apt-get install --no-install-recommends -y $(PACKAGES_ANYARCH) $(PACKAGES_ALLARCH) && \
-	cartesi-machine --final-hash"
+	apt-get install --no-install-recommends -y $(PACKAGES_ANYARCH) $(PACKAGES_ALLARCH) \
+	$(if $(filter cartesi-machine-emulator,$(PACKAGES_ANYARCH)),&& cartesi-machine --final-hash)"
 endif
 
 distclean: ## Remove everything from APT repository directory
