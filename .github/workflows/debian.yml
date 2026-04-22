@@ -9,10 +9,13 @@ jobs:
         include:
           - runner: ubuntu-24.04
             arch: amd64
+            packages_allarch: "cartesi-machine-linux-image cartesi-machine-rootfs-image"
           - runner: ubuntu-24.04-arm
             arch: arm64
+            packages_allarch: ""
           - runner: ubuntu-24.04-riscv
             arch: riscv64
+            packages_allarch: ""
 
     runs-on: ${{ matrix.runner }}
     name: Debian Build
@@ -50,7 +53,10 @@ jobs:
 
       - name: Build packages
         working-directory: debian
-        run: make packages TARGET_ARCH=${{ matrix.arch }}
+        run: |
+            make packages \
+              TARGET_ARCH=${{ matrix.arch }} \
+              PACKAGES_ALLARCH="${{ matrix.packages_allarch }}"
 
       - name: Export builder container image
         run: docker save cartesi/deb-builder-${{ matrix.arch }} | gzip > /tmp/deb-builder-${{ matrix.arch }}.tar.gz
