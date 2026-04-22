@@ -9,10 +9,10 @@ Example usage:
 
 ```sh
 # Install key to verify signature of repository packages
-wget -qO /etc/apk/keys/cartesi-apk-key.rsa.pub https://edubart.github.io/linux-packages/apk/keys/cartesi-apk-key.rsa.pub
+wget -qO /etc/apk/keys/cartesi-apk-key.rsa.pub https://cartesi.github.io/linux-packages/apk/keys/cartesi-apk-key.rsa.pub
 
 # Add repository
-echo "https://edubart.github.io/linux-packages/apk/stable" >> /etc/apk/repositories
+echo "https://cartesi.github.io/linux-packages/apk/stable" >> /etc/apk/repositories
 
 # Update list of available packages
 apk update
@@ -32,8 +32,8 @@ In case you are building a riscv64 guest rootfs with a Dockerfile, it could be i
 FROM --platform=linux/riscv64 alpine:latest
 
 # Install guest tools
-ADD --chmod=644 https://edubart.github.io/linux-packages/apk/keys/cartesi-apk-key.rsa.pub /etc/apk/keys/cartesi-apk-key.rsa.pub
-RUN echo "https://edubart.github.io/linux-packages/apk/stable" >> /etc/apk/repositories
+ADD --chmod=644 https://cartesi.github.io/linux-packages/apk/keys/cartesi-apk-key.rsa.pub /etc/apk/keys/cartesi-apk-key.rsa.pub
+RUN echo "https://cartesi.github.io/linux-packages/apk/stable" >> /etc/apk/repositories
 RUN apk update && apk add cartesi-machine-guest-tools
 
 # Remove unneeded packages to shrink image
@@ -45,7 +45,7 @@ RUN apk del --purge apk-tools alpine-release alpine-keys ca-certificates-bundle 
 If you would like to contribute to a package addition or update, clone first:
 
 ```sh
-git clone git@github.com:edubart/linux-packages.git
+git clone git@github.com:cartesi/linux-packages.git
 cd linux-packages/alpine
 ```
 
