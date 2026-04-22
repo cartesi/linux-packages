@@ -9,10 +9,10 @@ Example usage:
 
 ```sh
 # Install key to verify signature of repository packages
-wget -qO - https://edubart.github.io/linux-packages/apt/keys/cartesi-deb-key.gpg | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/cartesi-deb-key.gpg
+wget -qO - https://cartesi.github.io/linux-packages/apt/keys/cartesi-deb-key.gpg | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/cartesi-deb-key.gpg
 
 # Add repository
-echo "deb https://edubart.github.io/linux-packages/apt stable/" | sudo tee /etc/apt/sources.list.d/cartesi-deb-apt.list
+echo "deb https://cartesi.github.io/linux-packages/apt stable/" | sudo tee /etc/apt/sources.list.d/cartesi-deb-apt.list
 
 # Update list of available packages
 sudo apt-get update
@@ -33,8 +33,8 @@ FROM --platform=linux/riscv64 ubuntu:24.04
 
 # Install guest tools
 RUN apt-get update && apt-get install -y ca-certificates
-ADD --chmod=644 https://edubart.github.io/linux-packages/apt/keys/cartesi-deb-key.gpg.bin /etc/apt/trusted.gpg.d/cartesi-deb-key.gpg
-ADD --chmod=644 https://edubart.github.io/linux-packages/apt/stable/sources.list /etc/apt/sources.list.d/cartesi-deb-apt.list
+ADD --chmod=644 https://cartesi.github.io/linux-packages/apt/keys/cartesi-deb-key.gpg.bin /etc/apt/trusted.gpg.d/cartesi-deb-key.gpg
+ADD --chmod=644 https://cartesi.github.io/linux-packages/apt/stable/sources.list /etc/apt/sources.list.d/cartesi-deb-apt.list
 RUN apt-get update && apt-get install -y cartesi-machine-guest-tools
 ```
 
@@ -43,7 +43,7 @@ RUN apt-get update && apt-get install -y cartesi-machine-guest-tools
 If you would like to contribute to a package addition or update, clone first:
 
 ```sh
-git clone git@github.com:edubart/linux-packages.git
+git clone git@github.com:cartesi/linux-packages.git
 cd linux-packages/debian
 ```
 
