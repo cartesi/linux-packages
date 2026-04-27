@@ -4,15 +4,15 @@ This repository contains build scripts for packaging Cartesi related software fo
 
 ## Quick start
 
-Packages in this repository are compatible with **Debian 12** (Bookworm) or **Ubuntu 24.04** (Noble) on *amd64*, *arm64*, and *riscv64* architectures using the APT package manager.
+Packages in this repository are compatible with **Debian 13** (Trixie) or **Ubuntu 24.04** (Noble) and above on *amd64*, *arm64*, and *riscv64* architectures using the APT package manager.
 Example usage:
 
 ```sh
 # Install key to verify signature of repository packages
-wget -qO - https://cartesi.github.io/linux-packages/apt/keys/cartesi-deb-key.gpg | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/cartesi-deb-key.gpg
+sudo wget -q https://cartesi.github.io/linux-packages/apt/keys/cartesi-deb-key.gpg.bin -O /etc/apt/trusted.gpg.d/cartesi-deb-key.gpg
 
 # Add repository
-echo "deb https://cartesi.github.io/linux-packages/apt stable/" | sudo tee /etc/apt/sources.list.d/cartesi-deb-apt.list
+sudo wget -q https://cartesi.github.io/linux-packages/apt/stable/sources.list -O /etc/apt/sources.list.d/cartesi-deb-apt.list
 
 # Update list of available packages
 sudo apt-get update
