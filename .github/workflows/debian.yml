@@ -1,5 +1,9 @@
 name: Debian Packages
-on: [push]
+on:
+  push:
+    paths:
+      - ".github/workflows/debian.yml"
+      - "debian/**"
 
 jobs:
   debian-build:
