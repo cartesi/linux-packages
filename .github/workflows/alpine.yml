@@ -186,7 +186,7 @@ jobs:
           mkdir -p _site/apk/keys
           echo "$APK_PUB_KEY" > _site/apk/keys/cartesi-apk-key.rsa.pub
 
-      - name: Checkout git persisted cdn/apk/ artifacts
+      - name: Checkout git persisted cdn/ artifacts
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: cdn
@@ -194,6 +194,7 @@ jobs:
           lfs: true
           sparse-checkout: |
             apk
+            apt
 
       - name: Download signed archives
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
