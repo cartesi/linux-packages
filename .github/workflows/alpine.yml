@@ -206,11 +206,11 @@ jobs:
       - name: List _site/ content
         run: tree _site/
 
-      - name: Sync cdn/apk and _site/apk
+      - name: Sync cdn/ and _site/
         run: |
           rm _site/apk/keys/disposable.rsa.pub
-          cp -vr --update=none cdn/apk/* _site/apk/
-          cp -vr --update=none _site/apk/* cdn/apk/
+          cp -vr --update=none cdn/* _site/
+          cp -vr --update=none _site/* cdn/
 
       - name: Persist packages into git cdn
         run: |

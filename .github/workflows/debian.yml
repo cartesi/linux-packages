@@ -212,10 +212,10 @@ jobs:
           name: signed-artifacts-apt
           path: _site/
 
-      - name: Sync cdn/apt and _site/apt
+      - name: Sync cdn/ and _site/
         run: |
-          cp -vr --update=none cdn/apt/* _site/apt/
-          cp -vr --update=none _site/apt/* cdn/apt/
+          cp -vr --update=none cdn/* _site/
+          cp -vr --update=none _site/* cdn/
 
       - name: Persist packages into git cdn
         run: |
