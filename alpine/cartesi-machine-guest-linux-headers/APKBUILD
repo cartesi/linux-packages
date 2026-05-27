@@ -1,4 +1,4 @@
-# Maintainer: Eduardo Bart <edub4rt@gmail.com>
+# Maintainer: Cartesi Packages <noreply@packages.cartesi.io>
 pkgname=cartesi-machine-guest-linux-headers
 pkgver=0.20.0
 pkgrel=1
