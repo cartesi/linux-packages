@@ -10,6 +10,14 @@ apk update
 apk add alpine-sdk wget
 EOF
 
+# Install go
+ARG GO_VERSION=1.26.0
+ARG BUILDARCH
+RUN wget -O /tmp/go.tar.gz "https://go.dev/dl/go${GO_VERSION}.linux-${BUILDARCH}.tar.gz" && \
+    tar -C /usr/local -xzf /tmp/go.tar.gz && \
+    rm /tmp/go.tar.gz
+ENV PATH="/usr/local/go/bin:${PATH}"
+
 # List local apk repository
 RUN echo /root/packages/work >> /etc/apk/repositories && \
     adduser -D builder

@@ -29,4 +29,12 @@ COPY --chmod=755 sign-index.sh     /usr/local/bin/
 COPY --chmod=755 setup-env.sh      /usr/local/bin/
 COPY gen-key-batch.txt /usr/local/share/
 
+# Install go
+ARG GO_VERSION=1.26.0
+ARG BUILDARCH
+RUN wget -O /tmp/go.tar.gz "https://go.dev/dl/go${GO_VERSION}.linux-${BUILDARCH}.tar.gz" && \
+    tar -C /usr/local -xzf /tmp/go.tar.gz && \
+    rm /tmp/go.tar.gz
+ENV PATH="/usr/local/go/bin:${PATH}"
+
 WORKDIR /work

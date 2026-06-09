@@ -1,0 +1,13 @@
+#!/bin/bash
+pkgname=cartesi-rollups-node
+pkgver=2.0.0-alpha.11
+pkgrel=1
+_commit=70d3d0b297c277c160befc4f1d26b0bb1109cfdd
+sources=("${pkgname}_${pkgver}.orig.tar.gz::https://github.com/cartesi/rollups-node/archive/${_commit}.tar.gz")
+sha256sums=("122d93b381cb4edb7f240d51b3ab7ebc9e47f3d2bae78747982be4b02dd3b6b5  ${pkgname}_${pkgver}.orig.tar.gz")
+arch=any
+
+prepare() {
+    tar -xf ${pkgname}_${pkgver}.orig.tar.gz
+    mv rollups-node-${_commit} ${pkgname}-${pkgver}
+}
