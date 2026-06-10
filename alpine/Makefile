@@ -98,7 +98,8 @@ exec: ## Execute a COMMAND inside an image for given TARGET_ARCH
 		$(DOCKER_FLAGS) --rm $(IMAGE) \
 		ash -c "\
 	([ -f /key/$(KEY_NAME).rsa ] && cp /key/*.rsa.pub /etc/apk/keys/ && cp -a /key /root/.abuild && chown -R root:root /root/.abuild || true) && \
-	(wget -q $(REMOTE_APK_REPO_URL)/keys/cartesi-apk-key.rsa.pub -O /etc/apk/keys/cartesi-apk-key.rsa.pub && echo '$(REMOTE_APK_REPO_URL)/stable' >> /etc/apk/repositories || true) && \
+	(wget -q $(REMOTE_APK_REPO_URL)/keys/cartesi-apk-key.rsa.pub -O /etc/apk/keys/cartesi-apk-key.rsa.pub && echo '$(REMOTE_APK_REPO_URL)/stable' >> /etc/apk/repositories && apk update -q || true) && \
+	(find /root/packages/work -name 'APKINDEX.tar.gz' -size -1000c -delete 2>/dev/null; true) && \
 	$(COMMAND)"
 
 image: ## Build Docker image for building packages for given TARGET_ARCH

@@ -2,6 +2,7 @@
 set -e
 cd /apt
 rm -f ${REPO_NAME}/InRelease ${REPO_NAME}/Release.gpg
+find /apt/${REPO_NAME} -name '*.deb' -size -1000c -delete 2>/dev/null || true
 dpkg-scanpackages --multiversion ${REPO_NAME} > ${REPO_NAME}/Packages
 gzip -k -f /apt/${REPO_NAME}/Packages
 apt-ftparchive \
