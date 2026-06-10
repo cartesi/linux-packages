@@ -20,17 +20,10 @@ else
     dpkgbuild=full
 fi
 
-# Maybe skip build
-if [ "/apt/${REPO_NAME}/${pkgdeb}" -nt "$(find . -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -d' ' -f2)" ]; then
-    echo "${pkgname}: Package is up to date"; exit 0
-fi
-
-# Maybe skip build in CI
+# Skip if package already published (filename encodes pkgver-pkgrel)
 if [ -f "/apt/${REPO_NAME}/${pkgdeb}" ]; then
-    cached_ver=$(dpkg-deb --field "/apt/${REPO_NAME}/${pkgdeb}" Version)
-    if [ "${cached_ver}" = "${pkgver}-${pkgrel}" ]; then
-        echo "${pkgname}: Package is up to date (${cached_ver})"; exit 0
-    fi
+    echo "${pkgname}: Package is up to date (${pkgver}-${pkgrel})"
+    exit 0
 fi
 
 # Download
