@@ -1,0 +1,35 @@
+Format: 1.8
+Date: Thu, 11 Jun 2026 19:15:32 +0000
+Source: cartesi-machine-linux-image
+Binary: cartesi-machine-linux-image
+Built-For-Profiles: noudeb
+Architecture: source all
+Version: 0.20.0-1
+Distribution: RELEASED
+Urgency: low
+Maintainer: Cartesi Machine Reference Unit
+Changed-By: Cartesi Deb Builder <cartesi-deb-builder@builder>
+Description:
+ cartesi-machine-linux-image - Cartesi Machine guest Linux kernel image
+Changes:
+ cartesi-machine-linux-image (0.20.0-1) RELEASED; urgency=low
+ .
+   * Please read the project sources for release change logs.
+Checksums-Sha1:
+ 2c888d2d52c50ead7be496d3234787db94633b39 1025 cartesi-machine-linux-image_0.20.0-1.dsc
+ bcbdbe16359c7497571d1eb2dde30ad3534b962d 3683517 cartesi-machine-linux-image_0.20.0.orig.tar.gz
+ 214c95a6a634eaa49700e666f74466456effa866 4540 cartesi-machine-linux-image_0.20.0-1.debian.tar.xz
+ f60e5f3b21833414cd4993c3cea0e28102f5b1dd 6286 cartesi-machine-linux-image_0.20.0-1_all.buildinfo
+ cee0515534371f3883a0e4c9e2087d38a319753b 3123434 cartesi-machine-linux-image_0.20.0-1_all.deb
+Checksums-Sha256:
+ 735a40b0e84783959a758945ba39dc2564cdad7dc19de801653867ead70b2315 1025 cartesi-machine-linux-image_0.20.0-1.dsc
+ 00e2f355e889204b3a1db921456bc84be8f57250426b3f48260619854f5a9f5f 3683517 cartesi-machine-linux-image_0.20.0.orig.tar.gz
+ d6f6e28cdac14087b76055df8fbe478e3d08c7189ebf2bada4019f25f3a144fb 4540 cartesi-machine-linux-image_0.20.0-1.debian.tar.xz
+ e68d488bc5cd417a2ff14b0c23b531cf5cb2f6d7cfbed2399b79328ada497778 6286 cartesi-machine-linux-image_0.20.0-1_all.buildinfo
+ 9ce3fc4da6d45bc6e28b276d863f94c6461d93ade0c9ebbc1659505ebb850497 3123434 cartesi-machine-linux-image_0.20.0-1_all.deb
+Files:
+ a1bbb1d6619bd2c60b74966a4bc0b5e5 1025 otherosfs optional cartesi-machine-linux-image_0.20.0-1.dsc
+ d64091ba244287cebd98a1b0b272914d 3683517 otherosfs optional cartesi-machine-linux-image_0.20.0.orig.tar.gz
+ 9eda661b7ae2f59a95b36adae572db23 4540 otherosfs optional cartesi-machine-linux-image_0.20.0-1.debian.tar.xz
+ 39e483f83e10105a8b6babe1dfb91a13 6286 otherosfs optional cartesi-machine-linux-image_0.20.0-1_all.buildinfo
+ 840f15978e70402f70dfbb5cecd7b4e9 3123434 otherosfs optional cartesi-machine-linux-image_0.20.0-1_all.deb

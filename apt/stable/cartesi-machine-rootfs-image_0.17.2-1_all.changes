@@ -1,0 +1,35 @@
+Format: 1.8
+Date: Thu, 11 Jun 2026 19:15:32 +0000
+Source: cartesi-machine-rootfs-image
+Binary: cartesi-machine-rootfs-image
+Built-For-Profiles: noudeb
+Architecture: source all
+Version: 0.17.2-1
+Distribution: RELEASED
+Urgency: low
+Maintainer: Cartesi Machine Reference Unit
+Changed-By: Cartesi Deb Builder <cartesi-deb-builder@builder>
+Description:
+ cartesi-machine-rootfs-image - Cartesi Machine guest root filesystem image
+Changes:
+ cartesi-machine-rootfs-image (0.17.2-1) RELEASED; urgency=low
+ .
+   * Please read the project sources for release change logs.
+Checksums-Sha1:
+ 678a1af74ef2b9a335b82e32f6c5ed0098e87282 1043 cartesi-machine-rootfs-image_0.17.2-1.dsc
+ 61f1c375aee7b0be01a8337e6436b4ab5f4a15cb 111643968 cartesi-machine-rootfs-image_0.17.2.orig.tar.gz
+ 04a78465d33e4cb370accba258826cc3f9fe0fd6 31496 cartesi-machine-rootfs-image_0.17.2-1.debian.tar.xz
+ 6d58d3c6e5c673d962113a5b5357d8328f17ece9 6297 cartesi-machine-rootfs-image_0.17.2-1_all.buildinfo
+ aeea6b4baf0387fe29abf5b74d03f116ba8a591f 83675966 cartesi-machine-rootfs-image_0.17.2-1_all.deb
+Checksums-Sha256:
+ 67a3068239cd7ee6aa611b56cb30bbef746d5c737c0307cdaf7429b1a063b72e 1043 cartesi-machine-rootfs-image_0.17.2-1.dsc
+ 7d0832677bdb7715f9dc7a71e9b78b95a9da0f5ed8f4c09bd09dde930141b422 111643968 cartesi-machine-rootfs-image_0.17.2.orig.tar.gz
+ 9f19160c3a151088a03921215c13b7f0d9d440cdde5255c1a7caca5d227848e0 31496 cartesi-machine-rootfs-image_0.17.2-1.debian.tar.xz
+ 6245919b1d4a0354b9937e916359d72e4baefe2694489afd1c6e92dfc0cc896a 6297 cartesi-machine-rootfs-image_0.17.2-1_all.buildinfo
+ 6c466b29750e7aa596866dace6620a02a63c82758fcd62fab7b3039039a37196 83675966 cartesi-machine-rootfs-image_0.17.2-1_all.deb
+Files:
+ d666cc630431a555bd306db0c5d46964 1043 otherosfs optional cartesi-machine-rootfs-image_0.17.2-1.dsc
+ 2e27a06e324424f0167c9213c140d1e4 111643968 otherosfs optional cartesi-machine-rootfs-image_0.17.2.orig.tar.gz
+ 5a1f782538a1b953581ae4b7e09ee3d0 31496 otherosfs optional cartesi-machine-rootfs-image_0.17.2-1.debian.tar.xz
+ ae9f857a010e3640b790e64210d2186b 6297 otherosfs optional cartesi-machine-rootfs-image_0.17.2-1_all.buildinfo
+ e6498b43d3e7744ebfd28e6606e771e3 83675966 otherosfs optional cartesi-machine-rootfs-image_0.17.2-1_all.deb

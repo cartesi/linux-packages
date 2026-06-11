@@ -1,0 +1,35 @@
+Format: 1.8
+Date: Thu, 11 Jun 2026 19:16:50 +0000
+Source: cartesi-machine-guest-linux-headers
+Binary: cartesi-machine-guest-linux-headers
+Built-For-Profiles: noudeb
+Architecture: source all
+Version: 0.20.0-1
+Distribution: RELEASED
+Urgency: low
+Maintainer: Cartesi Machine Reference Unit
+Changed-By: Cartesi Deb Builder <cartesi-deb-builder@builder>
+Description:
+ cartesi-machine-guest-linux-headers - Cartesi Machine guest Linux kernel headers
+Changes:
+ cartesi-machine-guest-linux-headers (0.20.0-1) RELEASED; urgency=low
+ .
+   * Please read the project sources for release change logs.
+Checksums-Sha1:
+ 665e6392b0e70a12e4b9b07d7a8cda0b42d478d5 1097 cartesi-machine-guest-linux-headers_0.20.0-1.dsc
+ e66ad90a042770c970b222f42817d34665e2e7d2 1257632 cartesi-machine-guest-linux-headers_0.20.0.orig.tar.xz
+ a879b4c672fd82ae21c6c13c365824d093113877 4596 cartesi-machine-guest-linux-headers_0.20.0-1.debian.tar.xz
+ 2f8d2f2da1a284a4dd46ffb44db61d19fa564fe6 6135 cartesi-machine-guest-linux-headers_0.20.0-1_all.buildinfo
+ ceee364ca18ad49d27af979a239bd870e6d7b743 1324642 cartesi-machine-guest-linux-headers_0.20.0-1_all.deb
+Checksums-Sha256:
+ 415cb60f43bff97c9d913652fde633c9541c936f339dcd6dd8f426124ee781bc 1097 cartesi-machine-guest-linux-headers_0.20.0-1.dsc
+ 4a4714bfa8c0028cb443db2036fad4f8da07065c1cb4ac8e0921a259fddd731b 1257632 cartesi-machine-guest-linux-headers_0.20.0.orig.tar.xz
+ b4e5a2e519204a6b5ba1386e5cfed0decd351ccc05f2b5c41d769b5c4c210108 4596 cartesi-machine-guest-linux-headers_0.20.0-1.debian.tar.xz
+ cc5567af247d01092530131b3658c08d334613de75a73f590fa0823af5f83a9c 6135 cartesi-machine-guest-linux-headers_0.20.0-1_all.buildinfo
+ 61d181260fe607b451feb30280fb98d62760df3f7d94a6f02baf85863ea76c9d 1324642 cartesi-machine-guest-linux-headers_0.20.0-1_all.deb
+Files:
+ 133c8c209df01b21593d3d2a3de60b49 1097 otherosfs optional cartesi-machine-guest-linux-headers_0.20.0-1.dsc
+ 64acb3179d9aed1eb2c5f894226c83cb 1257632 otherosfs optional cartesi-machine-guest-linux-headers_0.20.0.orig.tar.xz
+ e6368db9d868fde18ecab742b3e773de 4596 otherosfs optional cartesi-machine-guest-linux-headers_0.20.0-1.debian.tar.xz
+ a3b9d37195412ca384656ae8d0c5f404 6135 otherosfs optional cartesi-machine-guest-linux-headers_0.20.0-1_all.buildinfo
+ c2406a8e58d18f3b79521fb7f6b743ba 1324642 otherosfs optional cartesi-machine-guest-linux-headers_0.20.0-1_all.deb

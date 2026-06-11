@@ -1,0 +1,38 @@
+Format: 1.8
+Date: Thu, 11 Jun 2026 19:15:32 +0000
+Source: xgenext2fs
+Binary: xgenext2fs
+Built-For-Profiles: noudeb
+Architecture: source amd64
+Version: 1.5.6-1
+Distribution: RELEASED
+Urgency: low
+Maintainer: Cartesi Machine Reference Unit
+Changed-By: Cartesi Deb Builder <cartesi-deb-builder@builder>
+Description:
+ xgenext2fs - ext2 filesystem generator for embedded systems
+Changes:
+ xgenext2fs (1.5.6-1) RELEASED; urgency=low
+ .
+   * Please read the project sources for release change logs.
+Checksums-Sha1:
+ 7af6ba43292386f37b3ade61299948bd55a96e18 882 xgenext2fs_1.5.6-1.dsc
+ 0af896eabc931d375df233ddab1f7628df9f713d 49824 xgenext2fs_1.5.6.orig.tar.gz
+ be4abe872fe1d0257020570136a7160b62244ef2 1116 xgenext2fs_1.5.6-1.debian.tar.xz
+ 79dc3ca68a0c0c17e429c20bc332116682ef6ea1 78484 xgenext2fs-dbgsym_1.5.6-1_amd64.ddeb
+ 39b8119ad75befe089d9faa4c6efc9fbf2676fe6 7262 xgenext2fs_1.5.6-1_amd64.buildinfo
+ 6ff87782140f293874c19e0e2b95af99f2abf675 31100 xgenext2fs_1.5.6-1_amd64.deb
+Checksums-Sha256:
+ 96d97673714a474fb958422ea0898fb70f08c86356e6b8a26c6c2ffd55b9c1d0 882 xgenext2fs_1.5.6-1.dsc
+ 34bfc26a037def23b85b676912462a3d126a87ef15c66c212b3500650da44f9e 49824 xgenext2fs_1.5.6.orig.tar.gz
+ 34a33ecb88e93d0607090416e5698e170496d2ae18accb75050e577b5ecbb139 1116 xgenext2fs_1.5.6-1.debian.tar.xz
+ b48ff996af66db13655cbf5f252ebbeefb583cb77bd02276facadbb1f8ddc764 78484 xgenext2fs-dbgsym_1.5.6-1_amd64.ddeb
+ 6cfd47937eebd025d864bbaa135a463b8df905ef32f98061189d4cc0069fe93f 7262 xgenext2fs_1.5.6-1_amd64.buildinfo
+ cd9dd68e2685f7009e95f2424042c6e546286cfbd5b810132151920b1999007e 31100 xgenext2fs_1.5.6-1_amd64.deb
+Files:
+ c4fecb88091273f96efdca55b53449cb 882 admin optional xgenext2fs_1.5.6-1.dsc
+ 154b71818461d0362cd8d8347d9ee6bf 49824 admin optional xgenext2fs_1.5.6.orig.tar.gz
+ 8beeb2785973e2ea9cb637c53ae5bfbf 1116 admin optional xgenext2fs_1.5.6-1.debian.tar.xz
+ 164d50f72d00c68216980062a63d9c79 78484 debug optional xgenext2fs-dbgsym_1.5.6-1_amd64.ddeb
+ 95769533e35e65811f149270c4b45016 7262 admin optional xgenext2fs_1.5.6-1_amd64.buildinfo
+ e8ba5d6c1799194a2eaa1b56acc90205 31100 admin optional xgenext2fs_1.5.6-1_amd64.deb

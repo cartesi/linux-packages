@@ -1,0 +1,38 @@
+Format: 1.8
+Date: Thu, 11 Jun 2026 19:16:51 +0000
+Source: xgenext2fs
+Binary: xgenext2fs
+Built-For-Profiles: noudeb
+Architecture: source riscv64
+Version: 1.5.6-1
+Distribution: RELEASED
+Urgency: low
+Maintainer: Cartesi Machine Reference Unit
+Changed-By: Cartesi Deb Builder <cartesi-deb-builder@builder>
+Description:
+ xgenext2fs - ext2 filesystem generator for embedded systems
+Changes:
+ xgenext2fs (1.5.6-1) RELEASED; urgency=low
+ .
+   * Please read the project sources for release change logs.
+Checksums-Sha1:
+ a322db828711d424b0e97a6d5d3602c6619273b1 882 xgenext2fs_1.5.6-1.dsc
+ 0af896eabc931d375df233ddab1f7628df9f713d 49824 xgenext2fs_1.5.6.orig.tar.gz
+ 1a4b65ec97a116b32ffb8911c99bc25c37d313e4 1116 xgenext2fs_1.5.6-1.debian.tar.xz
+ 9496bba348aea1f5eba710b298c55b87076f6d31 79348 xgenext2fs-dbgsym_1.5.6-1_riscv64.ddeb
+ 47cc30004ac5d6ac2f0db3d33431a983d0408cc2 7061 xgenext2fs_1.5.6-1_riscv64.buildinfo
+ 971fe196648ad56f557a14b70fd5b543fd17a0d4 36968 xgenext2fs_1.5.6-1_riscv64.deb
+Checksums-Sha256:
+ 1d875d3c07bf0f9ce11ca74821a88da1fc5b92ab9a240f2764418908555e5fe1 882 xgenext2fs_1.5.6-1.dsc
+ 34bfc26a037def23b85b676912462a3d126a87ef15c66c212b3500650da44f9e 49824 xgenext2fs_1.5.6.orig.tar.gz
+ b4cd026136f4b8c0c8488e53b881468cd3cc35f6beff26d00f81771b9e07b211 1116 xgenext2fs_1.5.6-1.debian.tar.xz
+ 7e9eba647731d2654e726ce4bad98302659b9339a005038fc9f92f15cdc4def3 79348 xgenext2fs-dbgsym_1.5.6-1_riscv64.ddeb
+ aec5780a24c5a34c9de0b0ac7a3990950c1e0dc2771ac880d392ed72ee6d3906 7061 xgenext2fs_1.5.6-1_riscv64.buildinfo
+ 1450d466f42feb0dbad1217902f056969b8f76f3e4e15ee86335f678d3e4de84 36968 xgenext2fs_1.5.6-1_riscv64.deb
+Files:
+ fa91db7dc94fcd220f662c05baa9328a 882 admin optional xgenext2fs_1.5.6-1.dsc
+ 154b71818461d0362cd8d8347d9ee6bf 49824 admin optional xgenext2fs_1.5.6.orig.tar.gz
+ f53a4f543529c4e2b83acbe5dd9810f8 1116 admin optional xgenext2fs_1.5.6-1.debian.tar.xz
+ f49734ad3161f6e4635fd3c879f72c59 79348 debug optional xgenext2fs-dbgsym_1.5.6-1_riscv64.ddeb
+ 79e4b2957f9a93d3e82aa1d043d707f6 7061 admin optional xgenext2fs_1.5.6-1_riscv64.buildinfo
+ 0b595de65f240ebd4a2a4c1289daa3e7 36968 admin optional xgenext2fs_1.5.6-1_riscv64.deb
