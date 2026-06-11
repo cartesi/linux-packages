@@ -53,13 +53,13 @@ packages: $(patsubst %,%.apk,$(PACKAGES)) ## Build packages for given TARGET_ARC
 %.apk: ## Build a package for given TARGET_ARCH
 	@$(MAKE) --no-print-directory exec COMMAND="\
 	cd $* && \
-	sh /work/build-apk.sh && \
+	build-apk.sh && \
 	chown -R $(shell id -u):$(shell id -g) /root/packages/work"
 
-re-sign: ## Re-sign packages and index for given TARGET_ARCH (uses x86_64 builder image) and KEY_NAME 
+re-sign: ## Re-sign packages and index for given TARGET_ARCH (uses x86_64 builder image) and KEY_NAME
 	@$(MAKE) --no-print-directory exec COMMAND="\
 	cd /root/packages/work/$(TARGET_ARCH) && \
-	find ./*.apk -exec /usr/local/bin/re-sign-apk.sh {} /root/.abuild/$(KEY_NAME).rsa \; && \
+	find ./*.apk -exec re-sign-apk.sh {} /root/.abuild/$(KEY_NAME).rsa \; && \
 	rm APKINDEX.tar.gz && \
 	apk index --no-warnings --output APKINDEX.tar.gz *.apk && \
 	abuild-sign --private /root/.abuild/$(KEY_NAME).rsa APKINDEX.tar.gz && \
@@ -95,21 +95,19 @@ exec: ## Execute a COMMAND inside an image for given TARGET_ARCH
 		--volume $(REPO_PATH)/$(REPO_NAME):/root/packages/work \
 		--volume .:/work \
 		--workdir /work \
+		--env KEY_NAME=$(KEY_NAME) \
+		--env REMOTE_APK_REPO_URL=$(REMOTE_APK_REPO_URL) \
 		$(DOCKER_FLAGS) --rm $(IMAGE) \
-		ash -c "\
-	([ -f /key/$(KEY_NAME).rsa ] && cp /key/*.rsa.pub /etc/apk/keys/ && cp -a /key /root/.abuild && chown -R root:root /root/.abuild || true) && \
-	(wget -q $(REMOTE_APK_REPO_URL)/keys/cartesi-apk-key.rsa.pub -O /etc/apk/keys/cartesi-apk-key.rsa.pub && echo '$(REMOTE_APK_REPO_URL)/stable' >> /etc/apk/repositories && apk update -q || true) && \
-	(find /root/packages/work -name 'APKINDEX.tar.gz' -size -1000c -delete 2>/dev/null; true) && \
-	$(COMMAND)"
+		setup-env.sh ash -c "$(COMMAND)"
 
 image: ## Build Docker image for building packages for given TARGET_ARCH
-	docker build --platform=linux/$(DOCKER_ARCH) \
+	docker buildx build --platform=linux/$(TARGET_ARCH) \
 		--build-arg=BASE_IMAGE=$(BASE_IMAGE) \
 		--tag=$(IMAGE) \
 		--load \
-
 		--progress=plain \
-		--file Dockerfile .
+		--file Dockerfile \
+		$(DOCKER_BUILD_FLAGS) .
 
 test: ## Test built packages for all architectures (x86_64/aarch64/riscv64)
 	@$(MAKE) --no-print-directory test-packages TARGET_ARCH=x86_64
@@ -119,14 +117,12 @@ test: ## Test built packages for all architectures (x86_64/aarch64/riscv64)
 ifeq ($(TARGET_ARCH),riscv64)
 test-packages:
 	@$(MAKE) --no-print-directory exec COMMAND="\
-	apk update && \
 	apk add --allow-untrusted $(PACKAGES) && \
 	rollup --help && \
 	cartesi-machine --final-hash"
 else
 test-packages: ## Test built packages for given TARGET_ARCH
 	@$(MAKE) --no-print-directory exec COMMAND="\
-	apk update && \
 	apk add --allow-untrusted $(PACKAGES) && \
 	cartesi-machine --final-hash"
 endif
