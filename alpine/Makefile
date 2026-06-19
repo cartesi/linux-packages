@@ -97,6 +97,7 @@ exec: ## Execute a COMMAND inside an image for given TARGET_ARCH
 		--workdir /work \
 		--env KEY_NAME=$(KEY_NAME) \
 		--env REMOTE_APK_REPO_URL=$(REMOTE_APK_REPO_URL) \
+		--env TARGET_ARCH=$(TARGET_ARCH) \
 		$(DOCKER_FLAGS) --rm $(IMAGE) \
 		setup-env.sh ash -c "$(COMMAND)"
 
