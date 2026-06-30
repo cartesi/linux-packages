@@ -1,0 +1,35 @@
+Format: 1.8
+Date: Tue, 30 Jun 2026 20:21:30 +0000
+Source: cartesi-rollups-node
+Binary: cartesi-rollups-node
+Built-For-Profiles: noudeb
+Architecture: source arm64
+Version: 2.0.0-alpha.12-1
+Distribution: RELEASED
+Urgency: low
+Maintainer: Cartesi Rollups Node Reference Unit
+Changed-By: Cartesi Deb Builder <cartesi-deb-builder@builder>
+Description:
+ cartesi-rollups-node - The Cartesi Rollups Node reference implementation
+Changes:
+ cartesi-rollups-node (2.0.0-alpha.12-1) RELEASED; urgency=low
+ .
+   * Please read the project sources for release change logs.
+Checksums-Sha1:
+ 856421f179c4e0233af97c0d203c9f05276351fa 1075 cartesi-rollups-node_2.0.0-alpha.12-1.dsc
+ 7507440c0e2d285b5f2ab5c3ed59378d6a45dce6 753849 cartesi-rollups-node_2.0.0-alpha.12.orig.tar.gz
+ 9f1b1d5aa30ac81cfc897dc73957b481081dbead 1612 cartesi-rollups-node_2.0.0-alpha.12-1.debian.tar.xz
+ f87228e3def7b3253342e1c97437119a50030a02 6570 cartesi-rollups-node_2.0.0-alpha.12-1_arm64.buildinfo
+ 3b91d57813c6bda39fcd2ed4a989155f4d5fd694 48461148 cartesi-rollups-node_2.0.0-alpha.12-1_arm64.deb
+Checksums-Sha256:
+ 7859c06bca1ccf491843f86bbc8a11c9de14d62a4b2b3e6ffc416c0298cfb470 1075 cartesi-rollups-node_2.0.0-alpha.12-1.dsc
+ 74f12214685ade2b2430da189e4decbbb2b6eedc2141e721dcf56ee657ad6630 753849 cartesi-rollups-node_2.0.0-alpha.12.orig.tar.gz
+ f5ad0ff8d9faa042cf04357fabb195535c98dc7913a4e01451e7c40b92cc3625 1612 cartesi-rollups-node_2.0.0-alpha.12-1.debian.tar.xz
+ e9afc8a9572976b99f8f64f98d418432645e3115512718f7e8fc2f3141e1c3a4 6570 cartesi-rollups-node_2.0.0-alpha.12-1_arm64.buildinfo
+ 4975cb8496546bcc5211b0c5819690a1965b42356a5014f2d2b48d27f8da1e0c 48461148 cartesi-rollups-node_2.0.0-alpha.12-1_arm64.deb
+Files:
+ 7b378182f495209df8b4c964268b7a45 1075 net optional cartesi-rollups-node_2.0.0-alpha.12-1.dsc
+ cd29d1ff902213ff6b046c95c96c93fc 753849 net optional cartesi-rollups-node_2.0.0-alpha.12.orig.tar.gz
+ a142ed0a82dd20cbd16c237b9d86ae77 1612 net optional cartesi-rollups-node_2.0.0-alpha.12-1.debian.tar.xz
+ 1009884be4fd188ccc6dc3b3e3a8736b 6570 net optional cartesi-rollups-node_2.0.0-alpha.12-1_arm64.buildinfo
+ 9f630ec58d03a8068caf1c9accd53424 48461148 net optional cartesi-rollups-node_2.0.0-alpha.12-1_arm64.deb
