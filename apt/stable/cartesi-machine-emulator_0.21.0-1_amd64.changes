@@ -1,0 +1,46 @@
+Format: 1.8
+Date: Wed, 12 Aug 2026 10:31:03 +0000
+Source: cartesi-machine-emulator
+Binary: cartesi-machine cartesi-machine-emulator cartesi-machine-emulator-dev
+Built-For-Profiles: noudeb
+Architecture: source amd64
+Version: 0.21.0-1
+Distribution: RELEASED
+Urgency: low
+Maintainer: Cartesi Machine Reference Unit
+Changed-By: Cartesi Deb Builder <cartesi-deb-builder@builder>
+Description:
+ cartesi-machine - Cartesi Machine (meta-package)
+ cartesi-machine-emulator - Cartesi Machine emulator for RISC-V Linux systems
+ cartesi-machine-emulator-dev - Cartesi Machine emulator development files
+Changes:
+ cartesi-machine-emulator (0.21.0-1) RELEASED; urgency=low
+ .
+   * Please read the project sources for release change logs.
+Checksums-Sha1:
+ c485d7f3b6d8d3901a395d9b9a97237bc4ef1166 1236 cartesi-machine-emulator_0.21.0-1.dsc
+ efde29268d6b82cccfe4701179d596a198e64166 2056063 cartesi-machine-emulator_0.21.0.orig.tar.gz
+ 4a96b81ffb566ea04f221c779acaadceab432452 101320 cartesi-machine-emulator_0.21.0-1.debian.tar.xz
+ 5b4078aab60f95b111475acd8b4ad46cc1afbd73 35879712 cartesi-machine-emulator-dbgsym_0.21.0-1_amd64.ddeb
+ 0bf08d9c7731d8b3fbe7500cc40b6f7fb354377d 2229242 cartesi-machine-emulator-dev_0.21.0-1_amd64.deb
+ a32383c4fc84ef04e694208547150225cd7856d4 7848 cartesi-machine-emulator_0.21.0-1_amd64.buildinfo
+ 495591abf0a6038ddffa59ab5c9b78d267f92090 6755284 cartesi-machine-emulator_0.21.0-1_amd64.deb
+ 33255fc8936ae35f459ee0cec01f4369b227874e 1702 cartesi-machine_0.21.0-1_amd64.deb
+Checksums-Sha256:
+ 915cd8aa178dac2a968fd566a0ea983f80c737a6c52c6c233ad76f018b786966 1236 cartesi-machine-emulator_0.21.0-1.dsc
+ 44fc83cb08a1907e66ab225ccf421b0fdad3f145be35b9a9ffe561d3563e3eda 2056063 cartesi-machine-emulator_0.21.0.orig.tar.gz
+ 2931360dc2ac083dfdf263e1813e30ee7e96b5a3f5c7a421a2359898077fc65b 101320 cartesi-machine-emulator_0.21.0-1.debian.tar.xz
+ dd8c7a366f26a1c61a6ecfc68d05a8a07a391ca62bac2ce5ec4db75b1db417ff 35879712 cartesi-machine-emulator-dbgsym_0.21.0-1_amd64.ddeb
+ d980c8b8372d0549c6b38855a9f3198edf94ace417e0bf69a09094f366b254ca 2229242 cartesi-machine-emulator-dev_0.21.0-1_amd64.deb
+ 09bb44ab34caac002c4216f93a656d9197754b9d4d8fa8096f529ca7abbd0813 7848 cartesi-machine-emulator_0.21.0-1_amd64.buildinfo
+ dd8b8aae36d08ada902e4e8dc203850fc63595ded4c53e285e0c6e9624bd809a 6755284 cartesi-machine-emulator_0.21.0-1_amd64.deb
+ 040a399beea57ab877f21d16c8e2c4cbbe93965e4f0748eb7345f33a3c0c5fab 1702 cartesi-machine_0.21.0-1_amd64.deb
+Files:
+ d785f2cb524cca2bacfe9bfe75a6d117 1236 otherosfs optional cartesi-machine-emulator_0.21.0-1.dsc
+ 000e2f8a7fd7836d5f45503c6e412189 2056063 otherosfs optional cartesi-machine-emulator_0.21.0.orig.tar.gz
+ 58a894205f7de35e4a642bbae1907f57 101320 otherosfs optional cartesi-machine-emulator_0.21.0-1.debian.tar.xz
+ 950192a8534d8976183ab2960f063933 35879712 debug optional cartesi-machine-emulator-dbgsym_0.21.0-1_amd64.ddeb
+ 5614b55a2c4d0be5b935897c9254d622 2229242 libdevel optional cartesi-machine-emulator-dev_0.21.0-1_amd64.deb
+ 736c419147a6c135dbb311553c7fc7d2 7848 otherosfs optional cartesi-machine-emulator_0.21.0-1_amd64.buildinfo
+ ec30ef8fce827761ff5562152c700304 6755284 otherosfs optional cartesi-machine-emulator_0.21.0-1_amd64.deb
+ a47f34ba039675a91dd196f126bc5f5e 1702 otherosfs optional cartesi-machine_0.21.0-1_amd64.deb
