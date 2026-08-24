@@ -1,24 +1,6 @@
 Package: cartesi-machine
 Source: cartesi-machine-emulator
 Version: 0.20.0-1
-Architecture: arm64
-Maintainer: Cartesi Machine Reference Unit
-Installed-Size: 9
-Depends: cartesi-machine-emulator, cartesi-machine-rootfs-image, cartesi-machine-linux-image
-Filename: stable/cartesi-machine_0.20.0-1_arm64.deb
-Size: 1712
-MD5sum: 45738870dd318f2f3fe8603870c57cab
-SHA1: ba35da05a7cbe636aee974fc896f11dac7e19a51
-SHA256: 345e8b1e2fd3a73348c9c913e75385425e22c6e8166e5460eda58ac164287749
-Section: otherosfs
-Priority: optional
-Multi-Arch: same
-Homepage: https://github.com/cartesi/machine-emulator
-Description: Cartesi Machine (meta-package)
-
-Package: cartesi-machine
-Source: cartesi-machine-emulator
-Version: 0.20.0-1
 Architecture: riscv64
 Maintainer: Cartesi Machine Reference Unit
 Installed-Size: 9
@@ -37,6 +19,24 @@ Description: Cartesi Machine (meta-package)
 Package: cartesi-machine
 Source: cartesi-machine-emulator
 Version: 0.20.0-1
+Architecture: arm64
+Maintainer: Cartesi Machine Reference Unit
+Installed-Size: 9
+Depends: cartesi-machine-emulator, cartesi-machine-rootfs-image, cartesi-machine-linux-image
+Filename: stable/cartesi-machine_0.20.0-1_arm64.deb
+Size: 1712
+MD5sum: 45738870dd318f2f3fe8603870c57cab
+SHA1: ba35da05a7cbe636aee974fc896f11dac7e19a51
+SHA256: 345e8b1e2fd3a73348c9c913e75385425e22c6e8166e5460eda58ac164287749
+Section: otherosfs
+Priority: optional
+Multi-Arch: same
+Homepage: https://github.com/cartesi/machine-emulator
+Description: Cartesi Machine (meta-package)
+
+Package: cartesi-machine
+Source: cartesi-machine-emulator
+Version: 0.20.0-1
 Architecture: amd64
 Maintainer: Cartesi Machine Reference Unit
 Installed-Size: 9
@@ -46,6 +46,42 @@ Size: 1712
 MD5sum: 9589698f0b8118a3d98a6d2d151d9786
 SHA1: 96ea8a1b41b10ecf5778443b24e036477f11d95c
 SHA256: 4f77b720b84a028bfa76a8340b1f73546c289c13eef4a2899c30c9d52d6f1ce2
+Section: otherosfs
+Priority: optional
+Multi-Arch: same
+Homepage: https://github.com/cartesi/machine-emulator
+Description: Cartesi Machine (meta-package)
+
+Package: cartesi-machine
+Source: cartesi-machine-emulator
+Version: 0.21.0-1
+Architecture: arm64
+Maintainer: Cartesi Machine Reference Unit
+Installed-Size: 9
+Depends: cartesi-machine-emulator, cartesi-machine-rootfs-image, cartesi-machine-linux-image
+Filename: stable/cartesi-machine_0.21.0-1_arm64.deb
+Size: 1708
+MD5sum: 5c2d6df00a30723fac5c3600a3bd3487
+SHA1: 3b681c61e797d2d9f9552c6319d95e71451c3727
+SHA256: acb5deee936a1013e81016003628d819e7da6c7332daa6d0e062b51030a12a3d
+Section: otherosfs
+Priority: optional
+Multi-Arch: same
+Homepage: https://github.com/cartesi/machine-emulator
+Description: Cartesi Machine (meta-package)
+
+Package: cartesi-machine
+Source: cartesi-machine-emulator
+Version: 0.21.0-1
+Architecture: amd64
+Maintainer: Cartesi Machine Reference Unit
+Installed-Size: 9
+Depends: cartesi-machine-emulator, cartesi-machine-rootfs-image, cartesi-machine-linux-image
+Filename: stable/cartesi-machine_0.21.0-1_amd64.deb
+Size: 1702
+MD5sum: a47f34ba039675a91dd196f126bc5f5e
+SHA1: 33255fc8936ae35f459ee0cec01f4369b227874e
+SHA256: 040a399beea57ab877f21d16c8e2c4cbbe93965e4f0748eb7345f33a3c0c5fab
 Section: otherosfs
 Priority: optional
 Multi-Arch: same
@@ -103,23 +139,39 @@ Multi-Arch: same
 Homepage: https://github.com/cartesi/machine-emulator
 Description: Cartesi Machine emulator for RISC-V Linux systems
 
-Package: cartesi-machine-emulator-dev
-Source: cartesi-machine-emulator
-Version: 0.20.0-1
-Architecture: amd64
+Package: cartesi-machine-emulator
+Version: 0.21.0-1
+Architecture: arm64
 Maintainer: Cartesi Machine Reference Unit
-Installed-Size: 23394
-Depends: libslirp-dev
-Filename: stable/cartesi-machine-emulator-dev_0.20.0-1_amd64.deb
-Size: 2192702
-MD5sum: 08e3abe55ae5a58d0354f3594162d110
-SHA1: d87d4d051b4b40b0fb0aa4a55e6754535ae6bbda
-SHA256: 1caef3df9a4a11634def04944e91c607158e811fba3c169a598ac932c2dd643f
-Section: libdevel
+Installed-Size: 43889
+Depends: libc6 (>= 2.38), libgomp1 (>= 9), libslirp0 (>= 4.1.0), lua5.4
+Filename: stable/cartesi-machine-emulator_0.21.0-1_arm64.deb
+Size: 6345988
+MD5sum: 3ba76fb1ecdbded549d8a400f708156e
+SHA1: 7a80b96c7637acb8895fde1ab6e132bcc7bc11db
+SHA256: 5c602914471c31cdb2ffff350586df866d239de8f137b80d94a6194049e28e02
+Section: otherosfs
 Priority: optional
 Multi-Arch: same
 Homepage: https://github.com/cartesi/machine-emulator
-Description: Cartesi Machine emulator development files
+Description: Cartesi Machine emulator for RISC-V Linux systems
+
+Package: cartesi-machine-emulator
+Version: 0.21.0-1
+Architecture: amd64
+Maintainer: Cartesi Machine Reference Unit
+Installed-Size: 48639
+Depends: libc6 (>= 2.38), libgomp1 (>= 9), libslirp0 (>= 4.1.0), lua5.4
+Filename: stable/cartesi-machine-emulator_0.21.0-1_amd64.deb
+Size: 6755284
+MD5sum: ec30ef8fce827761ff5562152c700304
+SHA1: 495591abf0a6038ddffa59ab5c9b78d267f92090
+SHA256: dd8b8aae36d08ada902e4e8dc203850fc63595ded4c53e285e0c6e9624bd809a
+Section: otherosfs
+Priority: optional
+Multi-Arch: same
+Homepage: https://github.com/cartesi/machine-emulator
+Description: Cartesi Machine emulator for RISC-V Linux systems
 
 Package: cartesi-machine-emulator-dev
 Source: cartesi-machine-emulator
@@ -151,6 +203,60 @@ Size: 14096398
 MD5sum: 5d3c8c6fc5c9e44bc2b669f8f9768d84
 SHA1: 4047333cdfd1835cf1102d11f36062aca9136f4a
 SHA256: 98b503861c02466d7e60784da90a79f7547fad8a42b022ad974ed98abae5067f
+Section: libdevel
+Priority: optional
+Multi-Arch: same
+Homepage: https://github.com/cartesi/machine-emulator
+Description: Cartesi Machine emulator development files
+
+Package: cartesi-machine-emulator-dev
+Source: cartesi-machine-emulator
+Version: 0.20.0-1
+Architecture: amd64
+Maintainer: Cartesi Machine Reference Unit
+Installed-Size: 23394
+Depends: libslirp-dev
+Filename: stable/cartesi-machine-emulator-dev_0.20.0-1_amd64.deb
+Size: 2192702
+MD5sum: 08e3abe55ae5a58d0354f3594162d110
+SHA1: d87d4d051b4b40b0fb0aa4a55e6754535ae6bbda
+SHA256: 1caef3df9a4a11634def04944e91c607158e811fba3c169a598ac932c2dd643f
+Section: libdevel
+Priority: optional
+Multi-Arch: same
+Homepage: https://github.com/cartesi/machine-emulator
+Description: Cartesi Machine emulator development files
+
+Package: cartesi-machine-emulator-dev
+Source: cartesi-machine-emulator
+Version: 0.21.0-1
+Architecture: arm64
+Maintainer: Cartesi Machine Reference Unit
+Installed-Size: 22157
+Depends: libslirp-dev
+Filename: stable/cartesi-machine-emulator-dev_0.21.0-1_arm64.deb
+Size: 2230758
+MD5sum: c2b759c4e33e8ea3d5a19eae15bf8b4e
+SHA1: 56f660858e8d1974e10e31aefa55d2f159b14370
+SHA256: e78eba43be170cc8625319b5c4bb8f6bd63639291e8875d947a4642f97811810
+Section: libdevel
+Priority: optional
+Multi-Arch: same
+Homepage: https://github.com/cartesi/machine-emulator
+Description: Cartesi Machine emulator development files
+
+Package: cartesi-machine-emulator-dev
+Source: cartesi-machine-emulator
+Version: 0.21.0-1
+Architecture: amd64
+Maintainer: Cartesi Machine Reference Unit
+Installed-Size: 23710
+Depends: libslirp-dev
+Filename: stable/cartesi-machine-emulator-dev_0.21.0-1_amd64.deb
+Size: 2229242
+MD5sum: 5614b55a2c4d0be5b935897c9254d622
+SHA1: 0bf08d9c7731d8b3fbe7500cc40b6f7fb354377d
+SHA256: d980c8b8372d0549c6b38855a9f3198edf94ace417e0bf69a09094f366b254ca
 Section: libdevel
 Priority: optional
 Multi-Arch: same
@@ -241,6 +347,22 @@ Multi-Arch: foreign
 Homepage: https://github.com/cartesi/machine-linux-image
 Description: Cartesi Machine guest Linux kernel image
 
+Package: cartesi-machine-linux-image
+Version: 0.21.0-1
+Architecture: all
+Maintainer: Cartesi Machine Reference Unit
+Installed-Size: 17143
+Filename: stable/cartesi-machine-linux-image_0.21.0-1_all.deb
+Size: 3244472
+MD5sum: 83471831bfdc5b31b061b414e3cc11ac
+SHA1: 1a8f27247e6ec16dbc2cce892e5318faf9a913c7
+SHA256: 5727f5c63ecc470ce1d4ae9dbd982963a23abcceb255d122a8f173f5694b92e0
+Section: otherosfs
+Priority: optional
+Multi-Arch: foreign
+Homepage: https://github.com/cartesi/machine-linux-image
+Description: Cartesi Machine guest Linux kernel image
+
 Package: cartesi-machine-rootfs-image
 Version: 0.17.2-1
 Architecture: all
@@ -256,6 +378,93 @@ Priority: optional
 Multi-Arch: foreign
 Homepage: https://github.com/cartesi/machine-guest-tools
 Description: Cartesi Machine guest root filesystem image
+
+Package: cartesi-machine-rootfs-image
+Version: 0.18.0-1
+Architecture: all
+Maintainer: Cartesi Machine Reference Unit
+Installed-Size: 358331
+Filename: stable/cartesi-machine-rootfs-image_0.18.0-1_all.deb
+Size: 86602126
+MD5sum: 6d95c4b1bfa5b03284f46433abd9f17b
+SHA1: 547494ecb92974cc9b064e0e8352434254df178b
+SHA256: 86c8b925b32f5127fb1a1dc44c0a60986661309ac977660b985d033d68042a6c
+Section: otherosfs
+Priority: optional
+Multi-Arch: foreign
+Homepage: https://github.com/cartesi/machine-guest-tools
+Description: Cartesi Machine guest root filesystem image
+
+Package: cartesi-rollups-node
+Version: 2.0.0-alpha.12-1
+Architecture: amd64
+Maintainer: Cartesi Rollups Node Reference Unit
+Installed-Size: 163688
+Depends: cartesi-machine-emulator (>= 0.20.0), cartesi-machine-emulator (<< 0.21.0)
+Filename: stable/cartesi-rollups-node_2.0.0-alpha.12-1_amd64.deb
+Size: 53430902
+MD5sum: 113240d340c3253b5e1ad34fdedda4e5
+SHA1: cd0dca750a74d96ce442c7775f9c3017d1e9d906
+SHA256: b2ff6052eda580d073b6642fc4596bd1d2c7dda2e17ed79524a978e47751740d
+Section: net
+Priority: optional
+Homepage: https://github.com/cartesi/rollups-node
+Description: The Cartesi Rollups Node reference implementation
+ Provides the infrastructure for running Cartesi Rollups applications
+ on EVM-compatible blockchains.
+
+Package: cartesi-rollups-node
+Version: 2.0.0-alpha.12-1
+Architecture: riscv64
+Maintainer: Cartesi Rollups Node Reference Unit
+Installed-Size: 147768
+Depends: cartesi-machine-emulator (>= 0.20.0), cartesi-machine-emulator (<< 0.21.0)
+Filename: stable/cartesi-rollups-node_2.0.0-alpha.12-1_riscv64.deb
+Size: 51175536
+MD5sum: c2d0c65b89d0cc7a9fdccc8e26b3ae8d
+SHA1: 1a9b9207391a10027c3b99301e6c2b0c74fb57d0
+SHA256: 41d722f7ee0e3f7f4e0dbf3e6eedb11d8ba49dd91c3cf8e4703804e89bc0a0ae
+Section: net
+Priority: optional
+Homepage: https://github.com/cartesi/rollups-node
+Description: The Cartesi Rollups Node reference implementation
+ Provides the infrastructure for running Cartesi Rollups applications
+ on EVM-compatible blockchains.
+
+Package: cartesi-rollups-node
+Version: 2.0.0-alpha.12-1
+Architecture: arm64
+Maintainer: Cartesi Rollups Node Reference Unit
+Installed-Size: 153232
+Depends: cartesi-machine-emulator (>= 0.20.0), cartesi-machine-emulator (<< 0.21.0)
+Filename: stable/cartesi-rollups-node_2.0.0-alpha.12-1_arm64.deb
+Size: 48461148
+MD5sum: 9f630ec58d03a8068caf1c9accd53424
+SHA1: 3b91d57813c6bda39fcd2ed4a989155f4d5fd694
+SHA256: 4975cb8496546bcc5211b0c5819690a1965b42356a5014f2d2b48d27f8da1e0c
+Section: net
+Priority: optional
+Homepage: https://github.com/cartesi/rollups-node
+Description: The Cartesi Rollups Node reference implementation
+ Provides the infrastructure for running Cartesi Rollups applications
+ on EVM-compatible blockchains.
+
+Package: xgenext2fs
+Version: 1.5.6-1
+Architecture: riscv64
+Maintainer: Cartesi Machine Reference Unit
+Installed-Size: 77
+Depends: libarchive13t64 (>= 3.0.4), libc6 (>= 2.34)
+Filename: stable/xgenext2fs_1.5.6-1_riscv64.deb
+Size: 36968
+MD5sum: 0b595de65f240ebd4a2a4c1289daa3e7
+SHA1: 971fe196648ad56f557a14b70fd5b543fd17a0d4
+SHA256: 1450d466f42feb0dbad1217902f056969b8f76f3e4e15ee86335f678d3e4de84
+Section: admin
+Priority: optional
+Multi-Arch: foreign
+Homepage: https://github.com/cartesi/xgenext2fs
+Description: ext2 filesystem generator for embedded systems
 
 Package: xgenext2fs
 Version: 1.5.6-1
@@ -285,23 +494,6 @@ Size: 31100
 MD5sum: e8ba5d6c1799194a2eaa1b56acc90205
 SHA1: 6ff87782140f293874c19e0e2b95af99f2abf675
 SHA256: cd9dd68e2685f7009e95f2424042c6e546286cfbd5b810132151920b1999007e
-Section: admin
-Priority: optional
-Multi-Arch: foreign
-Homepage: https://github.com/cartesi/xgenext2fs
-Description: ext2 filesystem generator for embedded systems
-
-Package: xgenext2fs
-Version: 1.5.6-1
-Architecture: riscv64
-Maintainer: Cartesi Machine Reference Unit
-Installed-Size: 77
-Depends: libarchive13t64 (>= 3.0.4), libc6 (>= 2.34)
-Filename: stable/xgenext2fs_1.5.6-1_riscv64.deb
-Size: 36968
-MD5sum: 0b595de65f240ebd4a2a4c1289daa3e7
-SHA1: 971fe196648ad56f557a14b70fd5b543fd17a0d4
-SHA256: 1450d466f42feb0dbad1217902f056969b8f76f3e4e15ee86335f678d3e4de84
 Section: admin
 Priority: optional
 Multi-Arch: foreign
