@@ -1,0 +1,49 @@
+Format: 1.8
+Date: Tue, 25 Aug 2026 20:36:18 +0000
+Source: cartesi-machine-guest-tools
+Binary: cartesi-machine-guest-libcmt cartesi-machine-guest-libcmt-dev cartesi-machine-guest-tools
+Built-For-Profiles: noudeb
+Architecture: source riscv64
+Version: 0.18.0-1
+Distribution: RELEASED
+Urgency: low
+Maintainer: Cartesi Machine Reference Unit
+Changed-By: Cartesi Deb Builder <cartesi-deb-builder@builder>
+Description:
+ cartesi-machine-guest-libcmt - Cartesi Machine guest libcmt
+ cartesi-machine-guest-libcmt-dev - Cartesi Machine guest libcmt development files
+ cartesi-machine-guest-tools - Cartesi Machine guest tools
+Changes:
+ cartesi-machine-guest-tools (0.18.0-1) RELEASED; urgency=low
+ .
+   * Please read the project sources for release change logs.
+Checksums-Sha1:
+ 57ace80c0091de5ebf989c26927da423d5b0d33f 1283 cartesi-machine-guest-tools_0.18.0-1.dsc
+ 3a750fca7ae1b68ca0473800b163e3da0caad2cf 297975 cartesi-machine-guest-tools_0.18.0.orig.tar.gz
+ 14f10dc259fbadd20cc9bd1999fe5ffff4034e22 1676 cartesi-machine-guest-tools_0.18.0-1.debian.tar.xz
+ 57f3eb7662a0938acdd797a56a5d8c0445aad6db 34170 cartesi-machine-guest-libcmt-dbgsym_0.18.0-1_riscv64.ddeb
+ 5654b2eacfad619868412254ef8b69e7467b6ec6 48418 cartesi-machine-guest-libcmt-dev_0.18.0-1_riscv64.deb
+ b17ac096a624c025ef77ba9ceb51500641a0f0f5 17348 cartesi-machine-guest-libcmt_0.18.0-1_riscv64.deb
+ b2d6a693cceb5f464a1149fbe5547a4a0c4d556f 1177312 cartesi-machine-guest-tools-dbgsym_0.18.0-1_riscv64.ddeb
+ c0da2ec6cf9ff94f1b7d775dec62961a1b6b2879 9216 cartesi-machine-guest-tools_0.18.0-1_riscv64.buildinfo
+ d943e39c474131ee3eb0f346a8596873ddb33503 1906224 cartesi-machine-guest-tools_0.18.0-1_riscv64.deb
+Checksums-Sha256:
+ be889f294125a3331e8991de79b997facd3056a9fab6f7f637e5fcef0f3603aa 1283 cartesi-machine-guest-tools_0.18.0-1.dsc
+ a16ee31a7abb0522ae70497721bf4856665297e1dd26d875a43fadbe48814bb6 297975 cartesi-machine-guest-tools_0.18.0.orig.tar.gz
+ 16daf5b9368eb5b4917cd29fe03615589efc6316d5b116b0beec54836b807de0 1676 cartesi-machine-guest-tools_0.18.0-1.debian.tar.xz
+ 5b9c241007dec21b4e8e63d231f8c289097c1e2b5dfb250e2c63f46956e6663b 34170 cartesi-machine-guest-libcmt-dbgsym_0.18.0-1_riscv64.ddeb
+ adea9b2932b13e288cf03a13dcdd7e099e4f33905b256eac9490c954b7e4dbac 48418 cartesi-machine-guest-libcmt-dev_0.18.0-1_riscv64.deb
+ 5a7d459faeb00b04a07b30f29596dae37bc8e8f35ec29a66bddf48f86b80efb0 17348 cartesi-machine-guest-libcmt_0.18.0-1_riscv64.deb
+ ca30b7f74d627a2a57b437fa86034083a9bdd271cb6cf9880a09dd6617a7ccbe 1177312 cartesi-machine-guest-tools-dbgsym_0.18.0-1_riscv64.ddeb
+ 13115152cf324ba045d7e6dbcdd926d6dca245c2347dfa170bfb2b1f2ef175de 9216 cartesi-machine-guest-tools_0.18.0-1_riscv64.buildinfo
+ 1122dfab1fe5ca65d3a9e0f123fe0d048fc8ccbeca705c6a0136275f8cd833a6 1906224 cartesi-machine-guest-tools_0.18.0-1_riscv64.deb
+Files:
+ 6664556bca2ce7a57482a9d07581129d 1283 utils optional cartesi-machine-guest-tools_0.18.0-1.dsc
+ 2ac03fb782d7950fc9b65024e38eb9d6 297975 utils optional cartesi-machine-guest-tools_0.18.0.orig.tar.gz
+ 3759d8af183f9a634c3ba803f3a2a406 1676 utils optional cartesi-machine-guest-tools_0.18.0-1.debian.tar.xz
+ 9d0dd078677ef2225ee3df53e4079d87 34170 debug optional cartesi-machine-guest-libcmt-dbgsym_0.18.0-1_riscv64.ddeb
+ a335991397e1fb5c0493a588e801588d 48418 libdevel optional cartesi-machine-guest-libcmt-dev_0.18.0-1_riscv64.deb
+ 1e3dc409c8ec72987ea40c12b6c5f615 17348 libs optional cartesi-machine-guest-libcmt_0.18.0-1_riscv64.deb
+ 3d2eedef590baf35ca78d4c0217b4103 1177312 debug optional cartesi-machine-guest-tools-dbgsym_0.18.0-1_riscv64.ddeb
+ bfd09c45c2db03e0f15fdef071502d33 9216 utils optional cartesi-machine-guest-tools_0.18.0-1_riscv64.buildinfo
+ 22ed4ccd23e3163acb6c55cf41ddb2dc 1906224 utils optional cartesi-machine-guest-tools_0.18.0-1_riscv64.deb
