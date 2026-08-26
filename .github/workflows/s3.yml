@@ -1,0 +1,44 @@
+name: Test S3 Access
+
+on:
+  push:
+    paths:
+      - ".github/workflows/s3.yml"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  test-s3-access:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6.2.3
+        with:
+          role-to-assume: ${{ vars.DIST_S3_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Create test file
+        run: |
+          echo "S3 access test from ${{ github.repository }} @ ${{ github.sha }} - $(date -u)" > test-file.txt
+
+      - name: Upload test file to S3
+        run: |
+          KEY="linux/ci-test/${{ github.run_id }}-${{ github.run_attempt }}.txt"
+          echo "S3_TEST_KEY=$KEY" >> "$GITHUB_ENV"
+          aws s3 cp test-file.txt "s3://${{ vars.DIST_S3_BUCKET_NAME }}/$KEY" --content-type text/plain
+
+      - name: Verify upload
+        run: |
+          aws s3api head-object \
+            --bucket "${{ vars.DIST_S3_BUCKET_NAME }}" \
+            --key "$S3_TEST_KEY"
+          echo "OK: object exists in S3 at s3://${{ vars.DIST_S3_BUCKET_NAME }}/$S3_TEST_KEY"
+
+      - name: Clean up test file
+        if: always()
+        run: |
+          if [ -n "${S3_TEST_KEY:-}" ]; then
+            aws s3 rm "s3://${{ vars.DIST_S3_BUCKET_NAME }}/$S3_TEST_KEY" || true
+          fi
