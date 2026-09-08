@@ -27,6 +27,7 @@ IMAGE=cartesi/apk-builder-$(DOCKER_ARCH)
 REPO_PATH=$(abspath ../cdn)/apk
 REPO_NAME=stable
 KEY_NAME=cartesi-apk-key
+REMOTE_APK_REPO_URL?=https://cartesi.github.io/linux-packages/apk
 
 # Package list to build
 PACKAGES=$(PACKAGES_ANYARCH)
@@ -97,6 +98,7 @@ exec: ## Execute a COMMAND inside an image for given TARGET_ARCH
 		$(DOCKER_FLAGS) --rm $(IMAGE) \
 		ash -c "\
 	([ -f /key/$(KEY_NAME).rsa ] && cp /key/*.rsa.pub /etc/apk/keys/ && cp -a /key /root/.abuild && chown -R root:root /root/.abuild || true) && \
+	(wget -q $(REMOTE_APK_REPO_URL)/keys/cartesi-apk-key.rsa.pub -O /etc/apk/keys/cartesi-apk-key.rsa.pub && echo '$(REMOTE_APK_REPO_URL)/stable' >> /etc/apk/repositories || true) && \
 	$(COMMAND)"
 
 image: ## Build Docker image for building packages for given TARGET_ARCH

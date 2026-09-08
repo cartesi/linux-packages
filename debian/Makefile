@@ -99,6 +99,9 @@ exec: ## Execute a COMMAND inside an image for given TARGET_ARCH
 		echo 'deb [trusted=yes arch=$(TARGET_ARCH)] file:///apt stable/' > /etc/apt/sources.list.d/cartesi-deb-apt.list && \
 		([ -f /apt/keys/$(KEY_NAME).gpg ] && gpg --dearmor -o /etc/apt/trusted.gpg.d/$(KEY_NAME).gpg < /apt/keys/$(KEY_NAME).gpg || true) && \
 		apt-get update -o Dir::Etc::sourcelist=/etc/apt/sources.list.d/cartesi-deb-apt.list -o Dir::Etc::sourceparts=- -o APT::Get::List-Cleanup=0 || true) && \
+		(wget -qO /etc/apt/trusted.gpg.d/$(KEY_NAME).gpg $(REPO_URL)/keys/$(KEY_NAME).gpg.bin && \
+		echo 'deb [arch=$(TARGET_ARCH),all signed-by=/etc/apt/trusted.gpg.d/$(KEY_NAME).gpg] $(REPO_URL) stable/' >> /etc/apt/sources.list.d/cartesi-deb-apt.list && \
+		apt-get update -o Dir::Etc::sourcelist=/etc/apt/sources.list.d/cartesi-deb-apt.list -o Dir::Etc::sourceparts=- -o APT::Get::List-Cleanup=0 || true) && \
 		$(COMMAND)"
 
 DOCKER_BUILD_FLAGS=
