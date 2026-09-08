@@ -1,6 +1,6 @@
 # Maintainer: Cartesi Packages <noreply@packages.cartesi.io>
 pkgname=cartesi-machine-emulator
-pkgver=0.20.0
+pkgver=0.21.0
 pkgrel=1
 _pkgver=$pkgver
 pkgdesc="Cartesi Machine emulator for RISC-V Linux systems"
@@ -12,8 +12,8 @@ makedepends="build-base boost-dev libslirp-dev lua5.4-dev patchelf"
 options="!check"
 source="machine-emulator-$_pkgver.tar.gz::https://github.com/cartesi/machine-emulator/archive/refs/tags/v$_pkgver.tar.gz
 add-generated-files.diff::https://github.com/cartesi/machine-emulator/releases/download/v$_pkgver/add-generated-files.diff"
-sha256sums="3746abb72d45dd2388f79fc24b048fe306db8e1f9f7e072176e51b95c4453949  machine-emulator-$_pkgver.tar.gz
-d9c2afcefc2759e7cd37bbedc83d54c81515f0fddb671103b489b8789aee33bb  add-generated-files.diff"
+sha256sums="44fc83cb08a1907e66ab225ccf421b0fdad3f145be35b9a9ffe561d3563e3eda  machine-emulator-$_pkgver.tar.gz
+596c5e171cac2e784aef01a26d47d19964b8593f74e37e863e0fcc1c9446be23  add-generated-files.diff"
 subpackages="$pkgname-dev:package_dev cartesi-machine:package_meta"
 
 _builddir="$srcdir/machine-emulator-$_pkgver"
