@@ -115,18 +115,18 @@ test: ## Test built packages for all architectures (amd64/arm64/riscv64)
 	@$(MAKE) --no-print-directory test-packages TARGET_ARCH=arm64
 	@$(MAKE) --no-print-directory test-packages TARGET_ARCH=riscv64
 
-ifeq ($(TARGET_ARCH),riscv64)
-test-packages:
-	@$(MAKE) --no-print-directory exec COMMAND="\
-	apt-get install --no-install-recommends -y $(PACKAGES_ANYARCH) $(PACKAGES_ALLARCH) $(PACKAGES_RISCV64) \
-	$(if $(filter cartesi-machine-guest-tools,$(PACKAGES_RISCV64)),&& rollup --help) \
-	$(if $(filter cartesi-machine-emulator,$(PACKAGES_ANYARCH)),&& cartesi-machine --final-hash)"
-else
 test-packages: ## Test built packages for given TARGET_ARCH
-	@$(MAKE) --no-print-directory exec COMMAND="\
-	apt-get install --no-install-recommends -y $(PACKAGES_ANYARCH) $(PACKAGES_ALLARCH) \
-	$(if $(filter cartesi-machine-emulator,$(PACKAGES_ANYARCH)),&& cartesi-machine --final-hash)"
-endif
+	@failed=""; \
+	for pkg in $(PACKAGES); do \
+		echo "=== Testing $$pkg ==="; \
+		case "$$pkg" in \
+			cartesi-machine-emulator) cmd="apt-get install --no-install-recommends -y $$pkg && cartesi-machine --final-hash" ;; \
+			cartesi-machine-guest-tools) cmd="apt-get install --no-install-recommends -y $$pkg && rollup --help" ;; \
+			*) cmd="apt-get install --no-install-recommends -y $$pkg" ;; \
+		esac; \
+		$(MAKE) --no-print-directory exec COMMAND="$$cmd" || failed="$$failed $$pkg"; \
+	done; \
+	if [ -n "$$failed" ]; then echo "FAILED package tests:$$failed"; exit 1; fi
 
 distclean: ## Remove everything from APT repository directory
 	rm -rf $(REPO_PATH)/$(REPO_NAME)

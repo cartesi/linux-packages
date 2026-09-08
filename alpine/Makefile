@@ -116,18 +116,18 @@ test: ## Test built packages for all architectures (x86_64/aarch64/riscv64)
 	@$(MAKE) --no-print-directory test-packages TARGET_ARCH=aarch64
 	@$(MAKE) --no-print-directory test-packages TARGET_ARCH=riscv64
 
-ifeq ($(TARGET_ARCH),riscv64)
-test-packages:
-	@$(MAKE) --no-print-directory exec COMMAND="\
-	apk add --allow-untrusted $(PACKAGES) && \
-	rollup --help && \
-	cartesi-machine --final-hash"
-else
 test-packages: ## Test built packages for given TARGET_ARCH
-	@$(MAKE) --no-print-directory exec COMMAND="\
-	apk add --allow-untrusted $(PACKAGES) && \
-	cartesi-machine --final-hash"
-endif
+	@failed=""; \
+	for pkg in $(PACKAGES); do \
+		echo "=== Testing $$pkg ==="; \
+		case "$$pkg" in \
+			cartesi-machine-emulator) cmd="apk add --allow-untrusted $$pkg && cartesi-machine --final-hash" ;; \
+			cartesi-machine-guest-tools) cmd="apk add --allow-untrusted $$pkg && rollup --help" ;; \
+			*) cmd="apk add --allow-untrusted $$pkg" ;; \
+		esac; \
+		$(MAKE) --no-print-directory exec COMMAND="$$cmd" || failed="$$failed $$pkg"; \
+	done; \
+	if [ -n "$$failed" ]; then echo "FAILED package tests:$$failed"; exit 1; fi
 
 distclean: ## Remove everything from APK repository directory
 	rm -rf $(REPO_PATH)/$(REPO_NAME)
