@@ -251,9 +251,9 @@ jobs:
 
       - name: Sync cdn/ and _site/
         run: |
-          rm _site/apk/keys/disposable.rsa.pub
           cp -vr --update=none cdn/* _site/
           cp -vr --update=none _site/* cdn/
+          rm _site/apk/keys/disposable.rsa.pub || true
 
       - name: Persist packages into git cdn
         run: |
