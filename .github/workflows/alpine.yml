@@ -80,10 +80,33 @@ jobs:
           name: artifacts-apk-${{ matrix.arch }}
           path: cdn/apk
 
+  alpine-check:
+    name: Alpine Check
+    runs-on: ubuntu-24.04
+    needs: alpine-build
+    outputs:
+      packages_built: ${{ steps.check.outputs.packages_built }}
+    steps:
+      - name: Download apk artifacts
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: artifacts-apk-*
+          path: cdn/apk/
+          merge-multiple: true
+      - name: Check for new packages
+        id: check
+        run: |
+          if find cdn/apk/stable -name '*.apk' -size +1000c | grep -q .; then
+            echo "packages_built=true" >> $GITHUB_OUTPUT
+          else
+            echo "packages_built=false" >> $GITHUB_OUTPUT
+          fi
+
   alpine-test:
     name: Alpine Test
     runs-on: ubuntu-24.04
-    needs: alpine-build
+    needs: [alpine-build, alpine-check]
+    if: needs.alpine-check.outputs.packages_built == 'true'
     permissions:
       packages: write
       contents: read
@@ -122,9 +145,10 @@ jobs:
   alpine-sign:
     runs-on: ubuntu-24.04
     name: Alpine Signing
-    needs: [ alpine-build, alpine-test ]
+    needs: [alpine-build, alpine-test, alpine-check]
+    if: needs.alpine-check.outputs.packages_built == 'true'
     #FIXME: uncomment when process is validated
-    #if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
+    #if: (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')) && needs.alpine-check.outputs.packages_built == 'true'
     environment: signing
     steps:
       - name: Checkout source code
