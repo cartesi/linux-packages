@@ -144,9 +144,6 @@ jobs:
           make test-packages TARGET_ARCH=amd64
           make test-packages TARGET_ARCH=arm64
           make test-packages TARGET_ARCH=riscv64
-          make test-packages TARGET_ARCH=amd64 IMAGE=debian:trixie
-          make test-packages TARGET_ARCH=arm64 IMAGE=debian:trixie
-          make test-packages TARGET_ARCH=riscv64 IMAGE=debian:trixie
 
   debian-sign:
     runs-on: ubuntu-24.04

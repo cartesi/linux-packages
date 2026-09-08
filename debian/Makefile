@@ -56,30 +56,30 @@ packages-info: ## Show which packages are going to be built
 	@mkdir -p $(REPO_PATH)/$(REPO_NAME)
 	@$(MAKE) --no-print-directory exec COMMAND="\
 	mkdir -p /builder/$* && \
- 	cd /builder/$* && \
+	cd /builder/$* && \
 	cp -a /work/$*/* . && \
-	REPO_NAME=$(REPO_NAME) REPO_URL=$(REPO_URL) /work/build-deb.sh && \
+	build-deb.sh && \
 	chown -R $(shell id -u):$(shell id -g) /apt/$(REPO_NAME)"
 
 key: ## Generate package signature key
 	echo "NOTICE: Generating new key!"
 	@mkdir -p $(REPO_PATH)/keys key
 	@$(MAKE) --no-print-directory exec COMMAND="\
-	gpg --batch --gen-key </work/gen-key-batch.txt && \
-    gpg --armor --export > /apt/keys/$(KEY_NAME).gpg && \
-    gpg --export > /apt/keys/$(KEY_NAME).gpg.bin && \
+	gpg --batch --gen-key /usr/local/share/gen-key-batch.txt && \
+	gpg --armor --export > /apt/keys/$(KEY_NAME).gpg && \
+	gpg --export > /apt/keys/$(KEY_NAME).gpg.bin && \
 	chown -R $(shell id -u):$(shell id -g) /root/.gnupg /apt/keys"
 	@$(MAKE) --no-print-directory index
 
 index: ## Generate package index (unsigned)
 	@mkdir -p $(REPO_PATH)/$(REPO_NAME)
 	@$(MAKE) --no-print-directory exec COMMAND="\
-	REPO_NAME=$(REPO_NAME) REPO_URL=$(REPO_URL) /work/gen-index.sh && \
+	gen-index.sh && \
 	chown -R $(shell id -u):$(shell id -g) /apt/$(REPO_NAME)"
 
 sign: ## Sign package index (requires key to exist, run 'make key' first)
 	@$(MAKE) --no-print-directory exec COMMAND="\
-	REPO_NAME=$(REPO_NAME) /work/sign-index.sh && \
+	sign-index.sh && \
 	chown -R $(shell id -u):$(shell id -g) /apt/$(REPO_NAME)"
 
 shell: ## Spawn an image shell for given TARGET_ARCH
@@ -91,18 +91,12 @@ exec: ## Execute a COMMAND inside an image for given TARGET_ARCH
 		--volume ./key:/root/.gnupg \
 		--volume .:/work \
 		--workdir /work \
+		--env TARGET_ARCH=$(TARGET_ARCH) \
+		--env REPO_NAME=$(REPO_NAME) \
+		--env REPO_URL=$(REPO_URL) \
+		--env KEY_NAME=$(KEY_NAME) \
 		$(DOCKER_FLAGS) --rm $(IMAGE) \
-		bash -c "\
-		apt-get update && \
-		apt-get install --no-install-recommends -y gpg && \
-		([ -f /apt/$(REPO_NAME)/Packages ] && \
-		echo 'deb [trusted=yes arch=$(TARGET_ARCH)] file:///apt stable/' > /etc/apt/sources.list.d/cartesi-deb-apt.list && \
-		([ -f /apt/keys/$(KEY_NAME).gpg ] && gpg --dearmor -o /etc/apt/trusted.gpg.d/$(KEY_NAME).gpg < /apt/keys/$(KEY_NAME).gpg || true) && \
-		apt-get update -o Dir::Etc::sourcelist=/etc/apt/sources.list.d/cartesi-deb-apt.list -o Dir::Etc::sourceparts=- -o APT::Get::List-Cleanup=0 || true) && \
-		(wget -qO /etc/apt/trusted.gpg.d/$(KEY_NAME).gpg $(REPO_URL)/keys/$(KEY_NAME).gpg.bin && \
-		echo 'deb [arch=$(TARGET_ARCH),all signed-by=/etc/apt/trusted.gpg.d/$(KEY_NAME).gpg] $(REPO_URL) stable/' >> /etc/apt/sources.list.d/cartesi-deb-apt.list && \
-		apt-get update -o Dir::Etc::sourcelist=/etc/apt/sources.list.d/cartesi-deb-apt.list -o Dir::Etc::sourceparts=- -o APT::Get::List-Cleanup=0 || true) && \
-		$(COMMAND)"
+		setup-env.sh bash -c "$(COMMAND)"
 
 DOCKER_BUILD_FLAGS=
 

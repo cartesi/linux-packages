@@ -5,7 +5,7 @@ set -e
 
 pkgfile="${pkgname}-${pkgver}-r${pkgrel}.apk"
 
-if find "/root/packages/work" -name "${pkgfile}" | grep -q .; then
+if find "/root/packages/work/${TARGET_ARCH}" -name "${pkgfile}" | grep -q .; then
     echo "${pkgname}: Package is up to date (${pkgver}-r${pkgrel})"
     exit 0
 fi

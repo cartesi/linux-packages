@@ -59,4 +59,4 @@ dpkg-buildpackage --build=${dpkgbuild} -us -uc
 # Update repository
 mv ../*.{deb,debian.tar.xz,dsc,buildinfo,changes} /apt/${REPO_NAME}/
 mv ../*.orig.tar.* /apt/${REPO_NAME}/
-/work/gen-index.sh
+gen-index.sh
