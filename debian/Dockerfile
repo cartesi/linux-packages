@@ -27,6 +27,7 @@ COPY --chmod=755 build-deb.sh      /usr/local/bin/
 COPY --chmod=755 gen-index.sh      /usr/local/bin/
 COPY --chmod=755 sign-index.sh     /usr/local/bin/
 COPY --chmod=755 setup-env.sh      /usr/local/bin/
+COPY --chmod=755 test-packages.sh  /usr/local/bin/
 COPY gen-key-batch.txt /usr/local/share/
 
 # Install go

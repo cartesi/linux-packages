@@ -22,8 +22,9 @@ ENV PATH="/usr/local/go/bin:${PATH}"
 RUN echo /root/packages/work >> /etc/apk/repositories && \
     adduser -D builder
 
-COPY --chmod=755 re-sign-apk.sh /usr/local/bin/
-COPY --chmod=755 build-apk.sh   /usr/local/bin/
-COPY --chmod=755 setup-env.sh   /usr/local/bin/
+COPY --chmod=755 re-sign-apk.sh    /usr/local/bin/
+COPY --chmod=755 build-apk.sh      /usr/local/bin/
+COPY --chmod=755 setup-env.sh      /usr/local/bin/
+COPY --chmod=755 test-packages.sh  /usr/local/bin/
 
 WORKDIR /work

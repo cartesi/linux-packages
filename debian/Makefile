@@ -116,17 +116,7 @@ test: ## Test built packages for all architectures (amd64/arm64/riscv64)
 	@$(MAKE) --no-print-directory test-packages TARGET_ARCH=riscv64
 
 test-packages: ## Test built packages for given TARGET_ARCH
-	@failed=""; \
-	for pkg in $(PACKAGES); do \
-		echo "=== Testing $$pkg ==="; \
-		case "$$pkg" in \
-			cartesi-machine-emulator) cmd="apt-get install --no-install-recommends -y $$pkg && cartesi-machine --final-hash" ;; \
-			cartesi-machine-guest-tools) cmd="apt-get install --no-install-recommends -y $$pkg && rollup --help" ;; \
-			*) cmd="apt-get install --no-install-recommends -y $$pkg" ;; \
-		esac; \
-		$(MAKE) --no-print-directory exec COMMAND="$$cmd" || failed="$$failed $$pkg"; \
-	done; \
-	if [ -n "$$failed" ]; then echo "FAILED package tests:$$failed"; exit 1; fi
+	@$(MAKE) --no-print-directory exec COMMAND="test-packages.sh $(PACKAGES)"
 
 distclean: ## Remove everything from APT repository directory
 	rm -rf $(REPO_PATH)/$(REPO_NAME)
