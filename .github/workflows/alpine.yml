@@ -61,9 +61,19 @@ jobs:
           sparse-checkout: |
             apk
 
-      - name: Build packages
+      - name: Build not riscv64 packages
+        id: build-all
+        if: matrix.arch != 'riscv64'
+        continue-on-error: true
         working-directory: alpine
         run: make packages TARGET_ARCH=${{ matrix.arch }} KEY_NAME=disposable
+
+      - name: Build riscv64 packages only
+        id: build-riscv64
+        if: matrix.arch == 'riscv64'
+        continue-on-error: true
+        working-directory: alpine
+        run: make -k packages TARGET_ARCH=${{ matrix.arch }} KEY_NAME=disposable PACKAGES="cartesi-machine-linux-image cartesi-machine-rootfs-image cartesi-machine-guest-linux-headers cartesi-machine-guest-tools"
 
       - name: Export builder container image
         run: docker save cartesi/apk-builder-${{ matrix.docker_arch }} | gzip > /tmp/apk-builder-${{ matrix.docker_arch }}.tar.gz
@@ -79,6 +89,12 @@ jobs:
         with:
           name: artifacts-apk-${{ matrix.arch }}
           path: cdn/apk
+
+      - name: Fail job if any package failed to build
+        if: steps.build-all.outcome == 'failure' || steps.build-riscv64.outcome == 'failure'
+        run: |
+          echo "One or more packages failed to build for ${{ matrix.arch }} (see 'Build packages' step). Already-built packages were still uploaded."
+          exit 1
 
   alpine-check:
     name: Alpine Check
