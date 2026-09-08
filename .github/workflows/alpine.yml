@@ -57,7 +57,7 @@ jobs:
         with:
           ref: cdn
           path: cdn
-          lfs: false
+          lfs: true
           sparse-checkout: |
             apk
 
