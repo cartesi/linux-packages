@@ -1,10 +1,10 @@
 #!/bin/bash
 pkgname=cartesi-machine-linux-image
-pkgver=0.20.0
+pkgver=0.21.0
 pkgrel=1
-_linuxver=6.5.13-ctsi-1
+_linuxver=6.5.13-ctsi-2
 sources=("linux.bin::https://github.com/cartesi/machine-linux-image/releases/download/v${pkgver}/linux-$_linuxver-v$pkgver.bin")
-sha256sums="65dd100ff6204346ac2f50f772721358b5c1451450ceb39a154542ee27b4c947 linux.bin"
+sha256sums="5c900060da2db2bfa84cd39cd9cd722988c83c42225f3cac55f2d3157e48f32f linux.bin"
 arch=all
 
 prepare() {
