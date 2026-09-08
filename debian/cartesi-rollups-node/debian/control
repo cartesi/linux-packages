@@ -1,0 +1,22 @@
+Source: cartesi-rollups-node
+Section: net
+Priority: optional
+Maintainer: Cartesi Rollups Node Reference Unit
+Homepage: https://github.com/cartesi/rollups-node
+Build-Depends:
+ debhelper-compat (= 13),
+ cartesi-machine-emulator (>= 0.20.0),
+ cartesi-machine-emulator-dev,
+Standards-Version: 4.5.1
+Rules-Requires-Root: no
+
+Package: cartesi-rollups-node
+Architecture: any
+Multi-Arch: no
+Depends:
+ ${misc:Depends},
+ cartesi-machine-emulator (>= 0.20.0),
+ cartesi-machine-emulator (<< 0.21.0),
+Description: The Cartesi Rollups Node reference implementation
+ Provides the infrastructure for running Cartesi Rollups applications
+ on EVM-compatible blockchains.
