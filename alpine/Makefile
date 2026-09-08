@@ -52,8 +52,7 @@ packages: $(patsubst %,%.apk,$(PACKAGES)) ## Build packages for given TARGET_ARC
 %.apk: ## Build a package for given TARGET_ARCH
 	@$(MAKE) --no-print-directory exec COMMAND="\
 	cd $* && \
-	export SOURCE_DATE_EPOCH=\\\`stat -c %Y APKBUILD\\\` && \
-	abuild -rF && \
+	sh /work/build-apk.sh && \
 	chown -R $(shell id -u):$(shell id -g) /root/packages/work"
 
 re-sign: ## Re-sign packages and index for given TARGET_ARCH (uses x86_64 builder image) and KEY_NAME 
