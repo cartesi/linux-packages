@@ -28,7 +28,7 @@ IMAGE=cartesi/apk-builder-$(DOCKER_ARCH)
 REPO_PATH=$(abspath ../cdn)/apk
 REPO_NAME=stable
 KEY_NAME=cartesi-apk-key
-REMOTE_APK_REPO_URL?=https://cartesi.github.io/linux-packages/apk
+REMOTE_APK_REPO_URL?=https://dist.cartesi.io/linux/apk
 
 # Package list to build
 PACKAGES=$(PACKAGES_ANYARCH)

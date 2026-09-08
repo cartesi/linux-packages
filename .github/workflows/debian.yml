@@ -26,6 +26,7 @@ jobs:
     permissions:
       packages: write
       contents: read
+      id-token: write
     steps:
       - name: Checkout source code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -46,16 +47,6 @@ jobs:
           push: false
           cache-from: type=gha,scope=${{ matrix.arch }}
           cache-to: type=gha,scope=${{ matrix.arch }},mode=max
-
-      - name: Restore published packages from cdn branch
-        continue-on-error: true
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: cdn
-          path: cdn
-          lfs: false
-          sparse-checkout: |
-            apt
 
       - name: Build not riscv64 packages
         id: build-all
@@ -179,15 +170,6 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Checkout cdn with LFS
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: cdn
-          path: cdn
-          lfs: true
-          sparse-checkout: |
-            apt
-
       - name: Download apt artifacts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
@@ -233,58 +215,28 @@ jobs:
     #FIXME: uncoment when process is validated
     #if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-24.04
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     permissions:
-      pages: write
       id-token: write
-      contents: write
     steps:
-      - name: Create GPG Public Key from variable
-        env:
-          DEB_PUB_KEY: ${{ vars.DEB_PUB_KEY }}
-        run: |
-          mkdir -p _site/apt/keys
-          echo "$DEB_PUB_KEY" > _site/apt/keys/cartesi-deb-key.gpg
-          echo "$DEB_PUB_KEY" | gpg --dearmor -o _site/apt/keys/cartesi-deb-key.gpg.bin
-
-      - name: Checkout git persisted cdn/apt/ artifacts
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: cdn
-          path: cdn
-          lfs: true
-          sparse-checkout: |
-            apt
-            apk
-
       - name: Download signed archives
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: signed-artifacts-apt
-          path: _site/
+          path: incoming/
 
-      - name: Sync cdn/ and _site/
+      - name: Write production GPG public key
+        env:
+          DEB_PUB_KEY: ${{ vars.DEB_PUB_KEY }}
         run: |
-          cp -vr --update=none cdn/* _site/
-          cp -vr --update=none _site/* cdn/
+          mkdir -p incoming/apt/keys
+          echo "$DEB_PUB_KEY" > incoming/apt/keys/cartesi-deb-key.gpg
+          echo "$DEB_PUB_KEY" | gpg --dearmor -o incoming/apt/keys/cartesi-deb-key.gpg.bin
 
-      - name: Persist packages into git cdn
-        run: |
-          cd cdn/apt/
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add --sparse keys/ stable/
-          git diff --staged --quiet || git commit -m "Update cdn/apt ${{ github.ref_name }}"
-          git push origin cdn
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6.2.3
+        with:
+          role-to-assume: ${{ secrets.DIST_S3_ROLE_ARN }}
+          aws-region: us-east-1
 
-      - name: Setup Pages
-        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v5.0.0
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0
+      - name: Publish to S3
+        run: aws s3 cp incoming/apt "s3://${{ secrets.DIST_S3_BUCKET_NAME }}/linux/apt" --recursive

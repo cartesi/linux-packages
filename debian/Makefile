@@ -24,7 +24,7 @@ IMAGE=cartesi/deb-builder-$(TARGET_ARCH)
 # Repository path to save built packages
 REPO_PATH=$(abspath ../cdn)/apt
 REPO_NAME=stable
-REPO_URL=https://cartesi.github.io/linux-packages/apt
+REPO_URL?=https://dist.cartesi.io/linux/apt
 KEY_NAME=cartesi-deb-key
 
 # Package list to build

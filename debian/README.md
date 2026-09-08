@@ -9,10 +9,10 @@ Example usage:
 
 ```sh
 # Install key to verify signature of repository packages
-sudo wget -q https://cartesi.github.io/linux-packages/apt/keys/cartesi-deb-key.gpg.bin -O /etc/apt/trusted.gpg.d/cartesi-deb-key.gpg
+sudo wget -q https://dist.cartesi.io/linux/apt/keys/cartesi-deb-key.gpg.bin -O /etc/apt/trusted.gpg.d/cartesi-deb-key.gpg
 
 # Add repository
-sudo wget -q https://cartesi.github.io/linux-packages/apt/stable/sources.list -O /etc/apt/sources.list.d/cartesi-deb-apt.list
+sudo wget -q https://dist.cartesi.io/linux/apt/stable/sources.list -O /etc/apt/sources.list.d/cartesi-deb-apt.list
 
 # Update list of available packages
 sudo apt-get update
@@ -33,8 +33,8 @@ FROM --platform=linux/riscv64 ubuntu:24.04
 
 # Install guest tools
 RUN apt-get update && apt-get install -y ca-certificates
-ADD --chmod=644 https://cartesi.github.io/linux-packages/apt/keys/cartesi-deb-key.gpg.bin /etc/apt/trusted.gpg.d/cartesi-deb-key.gpg
-ADD --chmod=644 https://cartesi.github.io/linux-packages/apt/stable/sources.list /etc/apt/sources.list.d/cartesi-deb-apt.list
+ADD --chmod=644 https://dist.cartesi.io/linux/apt/keys/cartesi-deb-key.gpg.bin /etc/apt/trusted.gpg.d/cartesi-deb-key.gpg
+ADD --chmod=644 https://dist.cartesi.io/linux/apt/stable/sources.list /etc/apt/sources.list.d/cartesi-deb-apt.list
 RUN apt-get update && apt-get install -y cartesi-machine-guest-tools
 ```
 
