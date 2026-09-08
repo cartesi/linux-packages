@@ -28,15 +28,15 @@ jobs:
       contents: read
     steps:
       - name: Checkout source code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           submodules: recursive
 
       - name: Setup up Docker Buildx
-        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4.0.0
+        uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4.3.0
 
       - name: Make builder container image
-        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f # v7.1.0
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
         with:
           context: alpine
           file: alpine/Dockerfile
@@ -53,7 +53,7 @@ jobs:
 
       - name: Restore published packages from cdn branch
         continue-on-error: true
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: cdn
           path: cdn
@@ -79,13 +79,13 @@ jobs:
         run: docker save cartesi/apk-builder-${{ matrix.docker_arch }} | gzip > /tmp/apk-builder-${{ matrix.docker_arch }}.tar.gz
 
       - name: Upload builder container image
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: image-apk-builder-${{ matrix.docker_arch }}
           path: /tmp/apk-builder-${{ matrix.docker_arch }}.tar.gz
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: artifacts-apk-${{ matrix.arch }}
           path: cdn/apk
@@ -128,7 +128,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout source code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           submodules: recursive
 
@@ -146,7 +146,7 @@ jobs:
           path: /tmp/images
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a # v4.0.0
+        uses: docker/setup-qemu-action@96fe6ef7f33517b61c61be40b68a1882f3264fb8 # v4.2.0
 
       - name: Import builder images
         run: find /tmp/images -name '*.tar.gz' | xargs -I {} docker image load --input {}
@@ -168,12 +168,12 @@ jobs:
     environment: signing
     steps:
       - name: Checkout source code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           submodules: recursive
 
       - name: Checkout cdn with LFS
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: cdn
           path: cdn
@@ -210,7 +210,7 @@ jobs:
           echo "PACKAGER_PRIVKEY=/root/.abuild/cartesi-apk-key.rsa" > key/abuild.conf
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a # v4.0.0
+        uses: docker/setup-qemu-action@96fe6ef7f33517b61c61be40b68a1882f3264fb8 # v4.2.0
 
       - name: Sign packages
         working-directory: alpine
@@ -220,7 +220,7 @@ jobs:
           make re-sign TARGET_ARCH=riscv64 KEY_NAME=cartesi-apk-key
 
       - name: Upload signed artifacts
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: signed-artifacts-apk
           path: cdn/apk
@@ -247,7 +247,7 @@ jobs:
           echo "$APK_PUB_KEY" > _site/apk/keys/cartesi-apk-key.rsa.pub
 
       - name: Checkout git persisted cdn/ artifacts
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: cdn
           path: cdn
