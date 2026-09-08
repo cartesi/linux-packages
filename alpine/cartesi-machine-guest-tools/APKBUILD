@@ -1,6 +1,6 @@
 # Maintainer: Cartesi Packages <noreply@packages.cartesi.io>
 pkgname=cartesi-machine-guest-tools
-pkgver=0.17.2
+pkgver=0.18.0
 _pkgver=$pkgver
 pkgrel=1
 pkgdesc="Cartesi Machine guest tools"
@@ -11,7 +11,7 @@ depends="busybox"
 makedepends="build-base cartesi-machine-guest-linux-headers cargo clang-libclang"
 options="!check"
 source="machine-guest-tools-$_pkgver.tar.gz::https://github.com/cartesi/machine-guest-tools/archive/refs/tags/v$_pkgver.tar.gz"
-sha256sums="d95f501997d72ee85dfd3e1c51e4423cf3a1e6dede68b85aa44f8e2a225202cd  machine-guest-tools-$_pkgver.tar.gz"
+sha256sums="a16ee31a7abb0522ae70497721bf4856665297e1dd26d875a43fadbe48814bb6  machine-guest-tools-$_pkgver.tar.gz"
 subpackages="cartesi-machine-guest-libcmt:package_libcmt cartesi-machine-guest-libcmt-dev:package_libcmt_dev"
 install="$pkgname.pre-install"
 _builddir="$srcdir/machine-guest-tools-$_pkgver"
