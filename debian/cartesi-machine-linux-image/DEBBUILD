@@ -1,0 +1,19 @@
+#!/bin/bash
+pkgname=cartesi-machine-linux-image
+pkgver=0.21.0
+pkgrel=1
+_linuxver=6.5.13-ctsi-2
+sources=("linux.bin::https://github.com/cartesi/machine-linux-image/releases/download/v${pkgver}/linux-$_linuxver-v$pkgver.bin")
+sha256sums="5c900060da2db2bfa84cd39cd9cd722988c83c42225f3cac55f2d3157e48f32f linux.bin"
+arch=all
+
+prepare() {
+    # Create reproducible source tarball
+    mkdir ${pkgname}-${pkgver}
+    mv linux.bin ${pkgname}-${pkgver}/
+    tar --sort=name \
+        --mtime="@$(stat -c %Y ${pkgname}-${pkgver}/linux.bin)" \
+        --owner=0 --group=0 --numeric-owner \
+        --pax-option=exthdr.name=%d/PaxHeaders/%f,delete=atime,delete=ctime \
+        -czf ${pkgname}_${pkgver}.orig.tar.gz ${pkgname}-${pkgver}
+}

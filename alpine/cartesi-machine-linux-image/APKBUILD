@@ -1,0 +1,17 @@
+# Maintainer: Cartesi Packages <noreply@packages.cartesi.io>
+pkgname=cartesi-machine-linux-image
+pkgver=0.21.0
+pkgrel=1
+_linuxver=6.5.13-ctsi-2
+pkgdesc="Cartesi Machine guest Linux kernel image"
+url="https://github.com/cartesi/machine-linux-image"
+arch="noarch"
+license="GPL-2.0"
+options="!check"
+source="linux.bin::https://github.com/cartesi/machine-linux-image/releases/download/v$pkgver/linux-$_linuxver-v$pkgver.bin"
+sha256sums="5c900060da2db2bfa84cd39cd9cd722988c83c42225f3cac55f2d3157e48f32f  linux.bin"
+
+package() {
+    cd "$srcdir"
+    install -Dm644 linux.bin "$pkgdir"/usr/share/cartesi-machine/images/linux.bin
+}

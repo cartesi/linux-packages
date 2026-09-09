@@ -1,0 +1,38 @@
+# Maintainer: Cartesi Packages <noreply@packages.cartesi.io>
+pkgname=cartesi-rollups-node
+pkgver=2.0.0_alpha12
+pkgrel=1
+_pkgver=2.0.0-alpha.12
+_commit=9fe9ce30ddbc95c22b4e92d1d2e89abeb6f76675
+pkgdesc="The Cartesi Rollups Node reference implementation"
+url="https://github.com/cartesi/rollups-node"
+arch="all"
+license="Apache-2.0"
+depends="cartesi-machine-emulator>=0.20 cartesi-machine-emulator<0.21"
+makedepends="build-base cartesi-machine-emulator-dev>=0.20 cartesi-machine-emulator-dev<0.21"
+options="!check net"
+source="rollups-node-$_pkgver.tar.gz::https://github.com/cartesi/rollups-node/archive/$_commit.tar.gz"
+sha256sums="74f12214685ade2b2430da189e4decbbb2b6eedc2141e721dcf56ee657ad6630  rollups-node-$_pkgver.tar.gz"
+
+_builddir="$srcdir/rollups-node-$_commit"
+
+build() {
+	cd "$_builddir"
+	export CGO_CFLAGS="-I/usr/include"
+	export CGO_LDFLAGS="-L/usr/lib"
+	local artifacts="node cli evm-reader advancer validator claimer jsonrpc-api prt"
+	for artifact in $artifacts; do
+		go build \
+			-ldflags "-s -w -X 'github.com/cartesi/rollups-node/internal/version.BuildVersion=$_pkgver' -r /usr/lib" \
+			./cmd/cartesi-rollups-$artifact
+	done
+}
+
+package() {
+	cd "$_builddir"
+	local artifacts="node cli evm-reader advancer validator claimer jsonrpc-api prt"
+	for artifact in $artifacts; do
+		install -Dm755 cartesi-rollups-$artifact \
+			"$pkgdir/usr/bin/cartesi-rollups-$artifact"
+	done
+}

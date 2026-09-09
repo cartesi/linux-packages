@@ -1,0 +1,47 @@
+# Maintainer: Cartesi Packages <noreply@packages.cartesi.io>
+pkgname=cartesi-machine-guest-tools
+pkgver=0.18.0
+_pkgver=$pkgver
+pkgrel=1
+pkgdesc="Cartesi Machine guest tools"
+url="https://github.com/cartesi/machine-guest-tools"
+arch="riscv64"
+license="Apache-2.0"
+depends="busybox"
+makedepends="build-base cartesi-machine-guest-linux-headers cargo clang-libclang"
+options="!check"
+source="machine-guest-tools-$_pkgver.tar.gz::https://github.com/cartesi/machine-guest-tools/archive/refs/tags/v$_pkgver.tar.gz"
+sha256sums="a16ee31a7abb0522ae70497721bf4856665297e1dd26d875a43fadbe48814bb6  machine-guest-tools-$_pkgver.tar.gz"
+subpackages="cartesi-machine-guest-libcmt:package_libcmt cartesi-machine-guest-libcmt-dev:package_libcmt_dev"
+install="$pkgname.pre-install"
+_builddir="$srcdir/machine-guest-tools-$_pkgver"
+
+prepare() {
+    cd "$_builddir"
+}
+
+build() {
+    cd "$_builddir"
+    make
+}
+
+package() {
+    cd "$_builddir"
+    make -C sys-utils install PREFIX=/usr DESTDIR="$pkgdir"
+    make -C rollup-http install PREFIX=/usr DESTDIR="$pkgdir"
+    make install-share PREFIX=/usr DESTDIR="$pkgdir"
+}
+
+package_libcmt() {
+    pkgdesc="Cartesi Machine guest libcmt"
+
+    cd "$_builddir"
+    make -C sys-utils/libcmt install-run PREFIX=/usr DESTDIR="$subpkgdir"
+}
+
+package_libcmt_dev() {
+    pkgdesc="Cartesi Machine guest libcmt development files"
+
+    cd "$_builddir"
+    make -C sys-utils/libcmt install-dev PREFIX=/usr DESTDIR="$subpkgdir"
+}

@@ -1,0 +1,131 @@
+# List of packages that doesn't depend on the architecture it's built on
+PACKAGES_ALLARCH=\
+cartesi-machine-linux-image \
+cartesi-machine-rootfs-image
+
+# List of packages to targeting any architecture
+PACKAGES_ANYARCH=\
+cartesi-machine-emulator \
+xgenext2fs \
+cartesi-rollups-node
+
+# List of packages to compile for riscv64
+PACKAGES_RISCV64=\
+cartesi-machine-guest-linux-headers \
+cartesi-machine-guest-tools
+
+# Target architecture to compile packages
+TARGET_ARCH=$(shell dpkg --print-architecture)
+
+# Docker base images used for building packages
+BASE_IMAGE=ubuntu:noble
+IMAGE=cartesi/deb-builder-$(TARGET_ARCH)
+
+# Repository path to save built packages
+REPO_PATH=$(abspath ../cdn)/apt
+REPO_NAME=stable
+REPO_URL?=https://dist.cartesi.io/linux/apt
+KEY_NAME=cartesi-deb-key
+
+# Package list to build
+ifeq ($(TARGET_ARCH),$(shell dpkg --print-architecture))
+PACKAGES+=$(PACKAGES_ALLARCH)
+endif
+PACKAGES+=$(PACKAGES_ANYARCH)
+ifeq ($(TARGET_ARCH),riscv64)
+PACKAGES+=$(PACKAGES_RISCV64)
+endif
+
+all: ## Build all packages (unsigned)
+	@$(MAKE) --no-print-directory image
+	@$(MAKE) --no-print-directory packages-all
+
+packages-all: ## Build packages for all architectures (amd64/arm64/riscv64)
+	@$(MAKE) --no-print-directory image TARGET_ARCH=amd64
+	@$(MAKE) --no-print-directory packages TARGET_ARCH=amd64
+	@$(MAKE) --no-print-directory image TARGET_ARCH=arm64
+	@$(MAKE) --no-print-directory packages TARGET_ARCH=arm64
+	@$(MAKE) --no-print-directory image TARGET_ARCH=riscv64
+	@$(MAKE) --no-print-directory packages TARGET_ARCH=riscv64
+
+packages: packages-info $(patsubst %,%.deb,$(PACKAGES)) ## Build packages for given TARGET_ARCH
+
+packages-info: ## Show which packages are going to be built
+	@echo "Packages to be built for $(TARGET_ARCH): $(PACKAGES)"
+
+%.deb: ## Build a package for given TARGET_ARCH
+	@mkdir -p $(REPO_PATH)/$(REPO_NAME)
+	@$(MAKE) --no-print-directory exec COMMAND="\
+	mkdir -p /builder/$* && \
+	cd /builder/$* && \
+	cp -a /work/$*/* . && \
+	build-deb.sh && \
+	chown -R $(shell id -u):$(shell id -g) /apt/$(REPO_NAME)"
+
+key: ## Generate package signature key
+	echo "NOTICE: Generating new key!"
+	@mkdir -p $(REPO_PATH)/keys key
+	@$(MAKE) --no-print-directory exec COMMAND="\
+	gpg --batch --gen-key /usr/local/share/gen-key-batch.txt && \
+	gpg --armor --export > /apt/keys/$(KEY_NAME).gpg && \
+	gpg --export > /apt/keys/$(KEY_NAME).gpg.bin && \
+	chown -R $(shell id -u):$(shell id -g) /root/.gnupg /apt/keys"
+	@$(MAKE) --no-print-directory index
+
+index: ## Generate package index (unsigned)
+	@mkdir -p $(REPO_PATH)/$(REPO_NAME)
+	@$(MAKE) --no-print-directory exec COMMAND="\
+	gen-index.sh && \
+	chown -R $(shell id -u):$(shell id -g) /apt/$(REPO_NAME)"
+
+sign: ## Sign package index (requires key to exist, run 'make key' first)
+	@$(MAKE) --no-print-directory exec COMMAND="\
+	sign-index.sh && \
+	chown -R $(shell id -u):$(shell id -g) /apt/$(REPO_NAME)"
+
+shell: ## Spawn an image shell for given TARGET_ARCH
+	@$(MAKE) --no-print-directory DOCKER_FLAGS="-it" exec COMMAND="bash"
+
+exec: ## Execute a COMMAND inside an image for given TARGET_ARCH
+	docker run --platform=linux/$(TARGET_ARCH) \
+		--volume $(REPO_PATH):/apt \
+		--volume ./key:/root/.gnupg \
+		--volume .:/work \
+		--workdir /work \
+		--env TARGET_ARCH=$(TARGET_ARCH) \
+		--env REPO_NAME=$(REPO_NAME) \
+		--env REPO_URL=$(REPO_URL) \
+		--env KEY_NAME=$(KEY_NAME) \
+		$(DOCKER_FLAGS) --rm $(IMAGE) \
+		setup-env.sh bash -c "$(COMMAND)"
+
+DOCKER_BUILD_FLAGS=
+
+image: ## Build Docker image for building packages for given TARGET_ARCH
+	docker buildx build --platform=linux/$(TARGET_ARCH) \
+		--build-arg=BASE_IMAGE=$(BASE_IMAGE) \
+		--tag=$(IMAGE) \
+		--load \
+		--progress=plain \
+		--file Dockerfile \
+		$(DOCKER_BUILD_FLAGS) .
+
+test: ## Test built packages for all architectures (amd64/arm64/riscv64)
+	@$(MAKE) --no-print-directory test-packages TARGET_ARCH=amd64
+	@$(MAKE) --no-print-directory test-packages TARGET_ARCH=arm64
+	@$(MAKE) --no-print-directory test-packages TARGET_ARCH=riscv64
+
+test-packages: ## Test built packages for given TARGET_ARCH
+	@$(MAKE) --no-print-directory exec COMMAND="test-packages.sh $(PACKAGES)"
+
+distclean: ## Remove everything from APT repository directory
+	rm -rf $(REPO_PATH)/$(REPO_NAME)
+
+help: ## Show this help
+	@sed \
+		-e '/^[a-zA-Z0-9_\-]*:.*##/!d' \
+		-e 's/:.*##\s*/:/' \
+		-e 's/^\(.\+\):\(.*\)/$(shell tput setaf 6)\1$(shell tput sgr0):\2/' \
+		$(MAKEFILE_LIST) | column -c2 -t -s :
+
+.PHONY: all packages-all packages packages-info shell index key sign exec image test test-packages distclean help

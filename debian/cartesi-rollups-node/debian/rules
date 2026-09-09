@@ -1,0 +1,30 @@
+#!/usr/bin/make -f
+
+export DEB_BUILD_OPTIONS+=nocheck
+UPSTREAM_VERSION = 2.0.0-alpha.11
+
+%:
+	dh $@
+
+override_dh_auto_configure:
+
+export CGO_CFLAGS := -I/usr/include
+export CGO_LDFLAGS := -L/usr/lib
+
+override_dh_auto_build:
+	set -e; for artifact in node cli evm-reader advancer validator claimer jsonrpc-api prt; do \
+		go build \
+			-ldflags "-s -w -X 'github.com/cartesi/rollups-node/internal/version.BuildVersion=$(UPSTREAM_VERSION)' -r /usr/lib" \
+			./cmd/cartesi-rollups-$$artifact; \
+	done
+
+override_dh_auto_install:
+	for artifact in node cli evm-reader advancer validator claimer jsonrpc-api prt; do \
+		install -Dm755 cartesi-rollups-$$artifact \
+			debian/cartesi-rollups-node/usr/bin/cartesi-rollups-$$artifact; \
+	done
+
+override_dh_auto_test:
+
+override_dh_shlibdeps:
+	dh_shlibdeps -- --ignore-missing-info
